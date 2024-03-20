@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">projekat</string>
+    <string-array name="modSpinner">
+        <item>Medicinski</item>
+        <item>Kuharski</item>
+        <item>Botanički</item>
+    </string-array>
 </resources>
