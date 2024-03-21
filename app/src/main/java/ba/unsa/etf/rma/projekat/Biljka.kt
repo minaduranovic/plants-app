@@ -1,7 +1,7 @@
 package ba.unsa.etf.rma.projekat
 
-class Blijka (
-   val naziv : String,
+data class Biljka (
+    val naziv : String,
     val porodica : String,
     val  medicinskoUpozorenje : String,
     val medicinskeKoristi : List<MedicinskaKorist>,
