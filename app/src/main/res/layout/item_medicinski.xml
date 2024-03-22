@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_height="160dp"
     android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="4dp"
+    android:layout_marginBottom="4dp"
     app:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -16,15 +16,17 @@
 
         <ImageView
             android:id="@+id/slikaItem"
-            android:layout_width="89dp"
-            android:layout_height="wrap_content"
+            android:layout_width="118dp"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             app:srcCompat="@drawable/ic_launcher_background" />
 
         <LinearLayout
-            android:layout_width="261dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:textAlignment="center">
 
@@ -32,57 +34,65 @@
                 android:id="@+id/nazivItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="naziv"
                 android:textAlignment="center"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/upozorenjeItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="tekst upozorenja"
                 android:textAlignment="center"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
 
             <LinearLayout
-                android:layout_width="247dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:textAlignment="center">
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/korist1Item"
                     android:layout_width="5dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="korist1"
                     android:textAlignment="center"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/korist2Item"
                     android:layout_width="1dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="korist2"
                     android:textAlignment="center"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/korist3Item"
                     android:layout_width="10dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="korist 3"
                     android:textAlignment="center"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 

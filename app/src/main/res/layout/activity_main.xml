@@ -7,27 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Spinner
-        android:id="@+id/modSpinner"
-        android:layout_width="406dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.007" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/blijkeRV"
         android:layout_width="wrap_content"
         android:layout_height="622dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
         android:clipToPadding="false"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -37,7 +22,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modSpinner"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/blijkeRV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/modSpinner"
+            android:layout_width="379dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/resetBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:text="R"
+            android:textAlignment="center" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

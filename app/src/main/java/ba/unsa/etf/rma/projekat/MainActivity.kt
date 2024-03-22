@@ -22,6 +22,10 @@ class BiljkaListAdapter(private var biljke: List<Biljka>) :
     inner class BiljkaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val biljkaImage: ImageView = itemView.findViewById(R.id.slikaItem)
         val biljkaTitle: TextView = itemView.findViewById(R.id.nazivItem)
+        val biljkaUpozorenje: TextView = itemView.findViewById(R.id.upozorenjeItem)
+        val biljkaKorist1: TextView= itemView.findViewById(R.id.korist1Item)
+        val biljkaKorist2: TextView= itemView.findViewById(R.id.korist2Item)
+        val biljkaKorist3: TextView= itemView.findViewById(R.id.korist3Item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BiljkaViewHolder {
@@ -34,6 +38,11 @@ class BiljkaListAdapter(private var biljke: List<Biljka>) :
     override fun getItemCount(): Int = biljke.size
     override fun onBindViewHolder(holder: BiljkaViewHolder, position: Int) {
         holder.biljkaTitle.text = biljke[position].naziv;
+        holder.biljkaUpozorenje.text=biljke[position].medicinskoUpozorenje
+        holder.biljkaKorist1.text= biljke[position].medicinskeKoristi.elementAt(0).toString()
+        holder.biljkaKorist2.text= biljke[position].medicinskeKoristi.elementAt(1).toString()
+//        holder.biljkaKorist3.text= biljke[position].medicinskeKoristi.elementAt(2).toString()
+
 
     }
 
