@@ -1,7 +1,5 @@
 package ba.unsa.etf.rma.projekat
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -23,15 +18,15 @@ class BiljkaListAdapter(private var biljke: List<Biljka>) :
         val biljkaImage: ImageView = itemView.findViewById(R.id.slikaItem)
         val biljkaTitle: TextView = itemView.findViewById(R.id.nazivItem)
         val biljkaUpozorenje: TextView = itemView.findViewById(R.id.upozorenjeItem)
-        val biljkaKorist1: TextView= itemView.findViewById(R.id.korist1Item)
-        val biljkaKorist2: TextView= itemView.findViewById(R.id.korist2Item)
-        val biljkaKorist3: TextView= itemView.findViewById(R.id.korist3Item)
-    }
+        val biljkaKorist1: TextView = itemView.findViewById(R.id.korist1Item)
+        val biljkaKorist2: TextView = itemView.findViewById(R.id.korist2Item)
+        val biljkaKorist3: TextView = itemView.findViewById(R.id.korist3Item)
 
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BiljkaViewHolder {
         val view = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.item_medicinski, parent, false)
+            .inflate(R.layout.biljka_item, parent, false)
         return BiljkaViewHolder(view)
     }
 

@@ -51,6 +51,98 @@
                 android:text="tekst upozorenja"
                 android:textAlignment="center"
                 android:textSize="12sp" />
+            <TextView
+                android:id="@+id/profilOkusaItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="profil okusa"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <!-- Dodajemo prva tri jela za kuharski mod -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:textAlignment="center"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/jelo1Item"
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="jelo1"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/jelo2Item"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="jelo2"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/jelo3Item"
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="jelo3"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/porodicaItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="porodica"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/klimatskiTipItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="klimatski tip"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/zemljisniTipItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="zemljisni tip"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
