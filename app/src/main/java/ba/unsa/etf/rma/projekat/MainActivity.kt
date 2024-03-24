@@ -15,49 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
-///
 
     private lateinit var biljkeView: RecyclerView
     private lateinit var biljkeAdapter: BiljkaListAdapter
     private var biljkeList = getBiljkeList()
 
-//    fun filterMedicinski(biljke: List<Biljka>): List<Biljka> {
-//        val medicinskeKoristi = biljke.flatMap { it.medicinskeKoristi }
-//        return biljke.filter { biljka ->
-//            biljka.medicinskeKoristi.any { korist ->
-//                medicinskeKoristi.any { it.opis == korist.opis && it != korist }
-//            }
-//        }
-//    }
-//
-//    fun filterKuharski(biljke: List<Biljka>): List<Biljka> {
-//        val jela = biljke.flatMap { it.jela }
-//        val profilOkusa = biljke.map { it.profilOkusa }.distinct()
-//        return biljke.filter { biljka ->
-//            biljka.jela.any { jelo ->
-//                jela.any { it == jelo } || profilOkusa.any { it == biljka.profilOkusa }
-//            }
-//        }
-//    }
-//
-//    fun filterBotanicki(biljke: List<Biljka>): List<Biljka> {
-//        val profilOkusa = biljke.map { it.profilOkusa }.distinct()
-//        val zemljisniTipovi = biljke.flatMap { it.zemljisniTipovi }.distinct()
-//        val klimatskiTipovi = biljke.flatMap { it.klimatskiTipovi }.distinct()
-//        return biljke.filter { biljka ->
-//            profilOkusa.any { it == biljka.profilOkusa } &&
-//                    (biljka.zemljisniTipovi.any { it in zemljisniTipovi } ||
-//                            biljka.klimatskiTipovi.any { it in klimatskiTipovi })
-//        }
-//    }
-
-//private fun filtriraj(mod: String){
-//    when (mod) {
-//        "Medicinski" -> filterMedicinski(mod)
-//        "Kuharski" -> biljkeAdapter.update("Kuharski")
-//        "Botanički" -> biljkeAdapter.update("Botanički")
-//    }
-//}
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -88,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                     "Botanički" -> biljkeAdapter.update("Botanički")
                 }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }

@@ -7,9 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-    class BiljkaListAdapter(private var biljke: List<Biljka>,  private var mod: String ="",
-
-                            ) :
+    class BiljkaListAdapter(
+        private var biljke: List<Biljka>,
+        private var mod: String =""
+    ) :
         RecyclerView.Adapter<BiljkaListAdapter.BiljkaViewHolder>() {
         inner class BiljkaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val biljkaImage: ImageView = itemView.findViewById(R.id.slikaItem)
@@ -29,6 +30,8 @@ import androidx.recyclerview.widget.RecyclerView
             val biljkaPorodica: TextView = itemView.findViewById(R.id.porodicaItem)
             val biljkaZemljisniTip: TextView = itemView.findViewById(R.id.zemljisniTipItem)
             val biljkaKlimatskiTip: TextView = itemView.findViewById(R.id.klimatskiTipItem)
+
+
 
 
             fun prikazModova(mod: String) {
@@ -94,48 +97,53 @@ import androidx.recyclerview.widget.RecyclerView
 
             holder.biljkaPorodica.text = biljke[position].porodica
             holder.biljkaProfilOkusa.text = biljke[position].profilOkusa.toString()
-            holder.biljkaKlimatskiTip.text = biljke[position].klimatskiTipovi.elementAt(0).toString()
-            holder.biljkaZemljisniTip.text = biljke[position].zemljisniTipovi.elementAt(0).toString()
+            holder.biljkaKlimatskiTip.text =
+                biljke[position].klimatskiTipovi.elementAt(0).toString()
+            holder.biljkaZemljisniTip.text =
+                biljke[position].zemljisniTipovi.elementAt(0).toString()
 
             val koristi = biljke[position].medicinskeKoristi.toList()
             val jela = biljke[position].jela
 
-            holder.biljkaKoristi.elementAt(0).text = koristi.getOrNull(0)?.toString() ?: "korist 1"
-            holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.toString() ?: "korist 2"
-            holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.toString() ?: "korist 3"
+            holder.biljkaKoristi.elementAt(0).text = koristi.getOrNull(0)?.toString() ?: ""
+            holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.toString() ?: ""
+            holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.toString() ?: ""
 
-            holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: "jelo 1"
-            holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: "jelo 2"
-            holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: "jelo 3"
+            holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
+            holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""
+            holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: ""
 
             holder.prikazModova(mod)
+
 
             holder.itemView.setOnClickListener {
                 val selectedPlant = biljke[position]
 
                 when (mod) {
-                    "Medicinski" -> {
-                        if (biljke.any { it != selectedPlant && it.medicinskeKoristi.intersect(selectedPlant.medicinskeKoristi).isNotEmpty() }) {
-                            updateBiljke(biljke)
-                        }
-                    }
-                    "Kuharski" -> {
-                        if (biljke.any { it != selectedPlant && (it.jela.intersect(selectedPlant.jela).isNotEmpty() || it.profilOkusa == selectedPlant.profilOkusa) }) {
-                            updateBiljke(biljke)
-                        }
-                    }
-                    "Botanički" -> {
-                        if (biljke.any { it != selectedPlant && it.porodica == selectedPlant.porodica && (it.klimatskiTipovi.intersect(selectedPlant.klimatskiTipovi).isNotEmpty() || it.zemljisniTipovi.intersect(selectedPlant.zemljisniTipovi).isNotEmpty()) }) {
-                        updateBiljke(biljke)
-                        }
-                    }
+                    "Medicinski" -> filterMedicinski(selectedPlant)
+                    "Kuharski" -> filterKuharski(selectedPlant)
+                    "Botanički" -> filterBotanicki(selectedPlant)
                 }
             }
-//        holder.itemView.setOnClickListener{ onItemClicked(biljke[position]}
-
-
 
         }
+        private fun filterMedicinski(selectedPlant: Biljka) {
+            val filteredList = biljke.filter { it == selectedPlant || it.medicinskeKoristi.any { korist ->
+                selectedPlant.medicinskeKoristi.any { it.opis == korist.opis }
+            } }
+            updateBiljke(filteredList)
+        }
+
+        private fun filterKuharski(selectedPlant: Biljka) {
+            val filteredList = biljke.filter { it == selectedPlant || it.jela.intersect(selectedPlant.jela).isNotEmpty() || it.profilOkusa == selectedPlant.profilOkusa }
+            updateBiljke(filteredList)
+        }
+
+        private fun filterBotanicki(selectedPlant: Biljka) {
+            val filteredList = biljke.filter { it == selectedPlant || (it.porodica == selectedPlant.porodica && (it.klimatskiTipovi.intersect(selectedPlant.klimatskiTipovi).isNotEmpty() && it.zemljisniTipovi.intersect(selectedPlant.zemljisniTipovi).isNotEmpty())) }
+            updateBiljke(filteredList)
+        }
+
         fun update(mod: String) {
             this.mod = mod
             notifyDataSetChanged()

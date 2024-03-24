@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="350dp"
     android:layout_height="160dp"
     android:layout_marginStart="4dp"
     android:layout_marginTop="4dp"
@@ -113,7 +113,7 @@
 
                 <TextView
                     android:id="@+id/jelo1Item"
-                    android:layout_width="5dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
@@ -125,7 +125,7 @@
 
                 <TextView
                     android:id="@+id/jelo2Item"
-                    android:layout_width="1dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
@@ -137,7 +137,7 @@
 
                 <TextView
                     android:id="@+id/jelo3Item"
-                    android:layout_width="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
@@ -149,7 +149,7 @@
 
                 <TextView
                     android:id="@+id/korist1Item"
-                    android:layout_width="5dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
@@ -161,7 +161,7 @@
 
                 <TextView
                     android:id="@+id/korist2Item"
-                    android:layout_width="1dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
@@ -173,7 +173,7 @@
 
                 <TextView
                     android:id="@+id/korist3Item"
-                    android:layout_width="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
