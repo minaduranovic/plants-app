@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -54,6 +55,13 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
+
+        val resetButton: Button = findViewById<Button>(R.id.resetBtn)
+        resetButton.setOnClickListener{
+            biljkeList= getBiljkeList()
+            biljkeAdapter.updateBiljke(biljkeList)
+        }
+
         biljkeView = findViewById(R.id.blijkeRV)
         biljkeView.layoutManager = LinearLayoutManager(
             this,
