@@ -1,5 +1,6 @@
 package ba.unsa.etf.rma.projekat
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,6 +96,13 @@ import androidx.recyclerview.widget.RecyclerView
             holder.biljkaTitle.text = biljke[position].naziv
             holder.biljkaUpozorenje.text = biljke[position].medicinskoUpozorenje
 
+//            val context: Context = holder.biljkaImage.context
+//            var id: Int = context.resources
+//                .getIdentifier(, "drawable", context.packageName)
+//            if (id == 0) id = context.resources
+//                .getIdentifier("picture1", "drawable", context.packageName)
+//            holder.biljkaImage.setImageResource(id)
+
             holder.biljkaPorodica.text = biljke[position].porodica
             holder.biljkaProfilOkusa.text = biljke[position].profilOkusa.toString()
             holder.biljkaKlimatskiTip.text =
@@ -144,7 +152,7 @@ import androidx.recyclerview.widget.RecyclerView
             updateBiljke(filteredList)
         }
 
-        fun update(mod: String) {
+        fun updateMod(mod: String) {
             this.mod = mod
             notifyDataSetChanged()
         }

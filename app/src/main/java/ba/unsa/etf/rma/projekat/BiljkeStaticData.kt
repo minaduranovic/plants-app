@@ -108,7 +108,7 @@ val biljke = listOf(
         medicinskoUpozorenje = "Prekomjerna konzumacija može izazvati nuspojave kod nekih ljudi.",
         medicinskeKoristi = listOf(MedicinskaKorist.SMIRENJE, MedicinskaKorist.PROTUUPALNO),
         profilOkusa = ProfilOkusaBiljke.GORKO,
-        jela = listOf("Rižoto od šafrana","Čaj od šafrana" ),
+        jela = listOf("Rižoto od šafrana", "Čaj od šafrana"),
         klimatskiTipovi = listOf(KlimatskiTip.UMJERENA, KlimatskiTip.SUHA),
         zemljisniTipovi = listOf(Zemljiste.PJESKOVITO)
     )
