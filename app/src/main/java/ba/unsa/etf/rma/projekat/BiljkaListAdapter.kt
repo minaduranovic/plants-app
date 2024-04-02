@@ -33,8 +33,6 @@ import androidx.recyclerview.widget.RecyclerView
             val biljkaKlimatskiTip: TextView = itemView.findViewById(R.id.klimatskiTipItem)
 
 
-
-
             fun prikazModova(mod: String) {
                 when (mod) {
                     "Medicinski" -> {
@@ -104,18 +102,18 @@ import androidx.recyclerview.widget.RecyclerView
 //            holder.biljkaImage.setImageResource(id)
 
             holder.biljkaPorodica.text = biljke[position].porodica
-            holder.biljkaProfilOkusa.text = biljke[position].profilOkusa.toString()
+            holder.biljkaProfilOkusa.text = biljke[position].profilOkusa.opis
             holder.biljkaKlimatskiTip.text =
-                biljke[position].klimatskiTipovi.elementAt(0).toString()
+                biljke[position].klimatskiTipovi.elementAt(0).opis
             holder.biljkaZemljisniTip.text =
-                biljke[position].zemljisniTipovi.elementAt(0).toString()
+                biljke[position].zemljisniTipovi.elementAt(0).naziv
 
             val koristi = biljke[position].medicinskeKoristi.toList()
             val jela = biljke[position].jela
 
-            holder.biljkaKoristi.elementAt(0).text = koristi.getOrNull(0)?.toString() ?: ""
-            holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.toString() ?: ""
-            holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.toString() ?: ""
+            holder.biljkaKoristi.elementAt(0).text = koristi.getOrNull(0)?.opis ?: ""
+            holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.opis ?: ""
+            holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.opis ?: ""
 
             holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
             holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""

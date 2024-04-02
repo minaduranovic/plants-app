@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             biljkeAdapter.updateBiljke(biljkeList)
         }
 
-        biljkeView = findViewById(R.id.blijkeRV)
+        biljkeView = findViewById(R.id.biljkeRV)
         biljkeView.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,

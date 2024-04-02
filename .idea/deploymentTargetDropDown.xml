@@ -2,7 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="TestS1">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="modChange()">
+        <State />
+      </entry>
+      <entry key="onFilterInMedicinskiModBosiljak()">
+        <State />
+      </entry>
+      <entry key="svakiModImaIspravneIdeve()">
         <State />
       </entry>
     </value>
