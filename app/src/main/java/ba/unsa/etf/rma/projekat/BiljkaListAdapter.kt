@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
     class BiljkaListAdapter(
         private var biljke: List<Biljka>,
-        private var mod: String =""
+        private var mod: String ="Medicinski"
     ) :
         RecyclerView.Adapter<BiljkaListAdapter.BiljkaViewHolder>() {
         inner class BiljkaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -92,35 +92,29 @@ import androidx.recyclerview.widget.RecyclerView
         override fun onBindViewHolder(holder: BiljkaViewHolder, position: Int) {
 
             holder.biljkaTitle.text = biljke[position].naziv
-            holder.biljkaUpozorenje.text = biljke[position].medicinskoUpozorenje
-
-//            val context: Context = holder.biljkaImage.context
-//            var id: Int = context.resources
-//                .getIdentifier(, "drawable", context.packageName)
-//            if (id == 0) id = context.resources
-//                .getIdentifier("picture1", "drawable", context.packageName)
-//            holder.biljkaImage.setImageResource(id)
-
-            holder.biljkaPorodica.text = biljke[position].porodica
-            holder.biljkaProfilOkusa.text = biljke[position].profilOkusa.opis
-            holder.biljkaKlimatskiTip.text =
-                biljke[position].klimatskiTipovi.elementAt(0).opis
-            holder.biljkaZemljisniTip.text =
-                biljke[position].zemljisniTipovi.elementAt(0).naziv
 
             val koristi = biljke[position].medicinskeKoristi.toList()
             val jela = biljke[position].jela
 
-            holder.biljkaKoristi.elementAt(0).text = koristi.getOrNull(0)?.opis ?: ""
-            holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.opis ?: ""
-            holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.opis ?: ""
-
-            holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
-            holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""
-            holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: ""
+            if (mod=="Medicinski"){
+                holder.biljkaUpozorenje.text = biljke[position].medicinskoUpozorenje
+                holder.biljkaKoristi.elementAt(0).text = koristi.getOrNull(0)?.opis ?: ""
+                holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.opis ?: ""
+                holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.opis ?: ""
+            } else if (mod=="Kuharski"){
+                holder.biljkaProfilOkusa.text = biljke[position].profilOkusa.opis
+                holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
+                holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""
+                holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: ""
+            }else if (mod=="Botanički"){
+                holder.biljkaPorodica.text = biljke[position].porodica
+                holder.biljkaKlimatskiTip.text =
+                    biljke[position].klimatskiTipovi.elementAt(0).opis
+                holder.biljkaZemljisniTip.text =
+                    biljke[position].zemljisniTipovi.elementAt(0).naziv
+            }
 
             holder.prikazModova(mod)
-
 
             holder.itemView.setOnClickListener {
                 val selectedPlant = biljke[position]

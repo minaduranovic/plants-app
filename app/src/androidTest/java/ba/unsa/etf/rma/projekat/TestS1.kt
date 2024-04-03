@@ -152,7 +152,7 @@ class TestS1 {
                 )
                 assert(
                     false,
-                    { "Scroll treba pasti sljedeća biljka se prikazuje nakon filtriranja a ne treba. Biljka:  " + naziv })
+                    { "Scroll treba pasti sljedeÄ‡a biljka se prikazuje nakon filtriranja a ne treba. Biljka:  " + naziv })
             } catch (e: Exception) {
                 assertThat(e.message, containsString("Error performing"))
             }
