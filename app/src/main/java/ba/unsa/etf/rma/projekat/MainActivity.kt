@@ -1,10 +1,13 @@
 package ba.unsa.etf.rma.projekat
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ListView
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +71,18 @@ class MainActivity : AppCompatActivity() {
         biljkeView.adapter = biljkeAdapter
         biljkeAdapter.updateBiljke(biljkeList)
 
+
+        val dodajButton: Button = findViewById<Button>(R.id.novaBiljkaBtn)
+        dodajButton.setOnClickListener{
+            val intent = Intent(this, NovaBiljkaActivity::class.java).apply {
+//                putExtra("biljka_naziv", "Naziv biljke")
+            }
+            startActivity(intent)
+        }
+
+
     }
+
+
 
 }
