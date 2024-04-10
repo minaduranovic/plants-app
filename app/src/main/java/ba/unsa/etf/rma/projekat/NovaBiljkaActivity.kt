@@ -6,13 +6,13 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class NovaBiljkaActivity : AppCompatActivity() {
-    private lateinit var biljka: Biljka
     private lateinit var medicinskaKoristListView: ListView
     private lateinit var klimatskiTipListView: ListView
     private lateinit var zemljisniTipListView: ListView
@@ -20,6 +20,11 @@ class NovaBiljkaActivity : AppCompatActivity() {
     private lateinit var jelaListView: ListView
     private lateinit var jelo: EditText
     private lateinit var dodajJeloBtn: Button
+    private lateinit var nazivBiljke: EditText
+    private lateinit var porodicaBiljke: EditText
+    private lateinit var medUpoz: EditText
+    private lateinit var dodajBiljkuButton: Button
+
     private val listaJela = arrayListOf<String>()
     private lateinit var adapter5: ArrayAdapter<String>
 
@@ -28,6 +33,9 @@ class NovaBiljkaActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.nova_biljka)
 
+        nazivBiljke = findViewById(R.id.nazivET)
+        porodicaBiljke= findViewById(R.id.porodicaET)
+        medUpoz=findViewById(R.id.medicinskoUpozorenjeET)
         medicinskaKoristListView = findViewById(R.id.medicinskaKoristLV)
         klimatskiTipListView = findViewById(R.id.klimatskiTipLV)
         zemljisniTipListView = findViewById(R.id.zemljisniTipLV)
@@ -35,6 +43,8 @@ class NovaBiljkaActivity : AppCompatActivity() {
         jelaListView = findViewById(R.id.jelaLV)
         jelo = findViewById(R.id.jeloET)
         dodajJeloBtn = findViewById(R.id.dodajJeloBtn)
+        dodajBiljkuButton= findViewById(R.id.dodajBiljkuBtn)
+
 
         val adapter1 = ArrayAdapter<MedicinskaKorist>(
             this,
@@ -93,13 +103,63 @@ class NovaBiljkaActivity : AppCompatActivity() {
             }
         }
 
+        dodajBiljkuButton.setOnClickListener{
+            checkAllFields()
+        }
+
     }
     private fun addJelaToList() {
         val novoJelo = jelo.text.toString()
+        if (novoJelo.length<=2 || novoJelo.length>20) jelo.setError("Jelo mora biti u opsegu od 2 do 20 znakova!")
+        fun List<String>.lowerCase(): List<String> = this.map { it.lowercase() }
         if (novoJelo.isNotEmpty()) {
+            if (listaJela.lowerCase().contains(novoJelo.lowercase())) {
+                jelo.setError("Ne mozete unijeti jelo koje vec postoji!")
+            }
             listaJela.add(0, novoJelo)
             adapter5.notifyDataSetChanged()
             jelo.setText("")
         }
     }
+
+    private fun checkAllFields(): Boolean {
+        if (nazivBiljke.length()<=2 || nazivBiljke.length()>20) {
+            nazivBiljke.setError("Naziv biljke mora biti u opsegu od 2 do 20 znakova!")
+            return false
+        }
+        if (porodicaBiljke.length()<=2 || porodicaBiljke.length()>20) {
+            porodicaBiljke.setError("Porodica biljke mora biti u opsegu od 2 do 20 znakova!")
+            return false
+        }
+        if (medUpoz.length()<=2 || medUpoz.length()>20) {
+            medUpoz.setError("Medicinsko upozorenje mora biti u opsegu od 2 do 20 znakova!")
+            return false
+        }
+//        if (jelo.length()<=2 ||  jelo.length()>20) {
+//            jelo.setError("Jelo mora biti u opsegu od 2 do 20 znakova!")
+//            return false
+//        }
+        if (medicinskaKoristListView.checkedItemCount == 0) {
+            Toast.makeText(this, "Odaberite barem jednu medicinsku korist!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (klimatskiTipListView.checkedItemCount == 0) {
+            Toast.makeText(this, "Odaberite barem jedan klimatski tip!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (zemljisniTipListView.checkedItemCount == 0) {
+            Toast.makeText(this, "Odaberite barem jedan zemljisni tip!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (profilOkusaListView.checkedItemCount == 0) {
+            Toast.makeText(this, "Odaberite profil okusa biljke!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (jelaListView.adapter.count==0){
+            Toast.makeText(this, "Morate dodati bar jedno jelo!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
 }
