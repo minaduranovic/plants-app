@@ -73,15 +73,32 @@ class MainActivity : AppCompatActivity() {
 
 
         val dodajButton: Button = findViewById<Button>(R.id.novaBiljkaBtn)
-        dodajButton.setOnClickListener{
-            val intent = Intent(this, NovaBiljkaActivity::class.java).apply {
-//                putExtra("biljka_naziv", "Naziv biljke")
-            }
+        dodajButton.setOnClickListener {
+            val intent = Intent(this, NovaBiljkaActivity::class.java)
+//            startActivityForResult(intent, NOVA_BILJKA_REQUEST_CODE)
             startActivity(intent)
         }
 
 
+
+
     }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == NOVA_BILJKA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            val novaBiljka = data?.getParcelableExtra<Biljka>("nova_biljka")
+//            novaBiljka?.let {
+//                // Dodavanje nove biljke u listu biljaka i ažuriranje adaptera
+//                biljkeList.add(it)
+//                biljkeAdapter.updateBiljke(biljkeList)
+//            }
+//        }
+//    }
+//
+//    companion object {
+//        const val NOVA_BILJKA_REQUEST_CODE = 1
+//    }
+
 
 
 

@@ -1,5 +1,8 @@
 package ba.unsa.etf.rma.projekat
 
+import android.os.Parcel
+import android.os.Parcelable
+
 data class Biljka(
     val naziv: String,
     val porodica: String,
