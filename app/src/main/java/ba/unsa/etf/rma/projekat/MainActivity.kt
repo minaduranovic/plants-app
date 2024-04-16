@@ -1,25 +1,21 @@
 package ba.unsa.etf.rma.projekat
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var biljkeView: RecyclerView
     private lateinit var biljkeAdapter: BiljkaListAdapter
     private var biljkeList = getBiljkeList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -71,35 +67,38 @@ class MainActivity : AppCompatActivity() {
         biljkeView.adapter = biljkeAdapter
         biljkeAdapter.updateBiljke(biljkeList)
 
-
         val dodajButton: Button = findViewById<Button>(R.id.novaBiljkaBtn)
         dodajButton.setOnClickListener {
-            val intent = Intent(this, NovaBiljkaActivity::class.java)
-//            startActivityForResult(intent, NOVA_BILJKA_REQUEST_CODE)
-            startActivity(intent)
+            val intent2 = Intent(this, NovaBiljkaActivity::class.java)
+            startActivity(intent2)
+
         }
 
+        val bundle = intent.extras
+        val nazivBiljke = bundle?.getString("nazivBiljke")
+        val porodicaBiljke = bundle?.getString("porodicaBiljke")
+        val medicinskoUpozorenje = bundle?.getString("medicinskoUpozorenje")
+        val listaJela = bundle?.getStringArrayList("listaJela")
+        val medicinskeKoristi = bundle?.getIntegerArrayList("medicinskaKoristChecked")?.map { MedicinskaKorist.entries[it] }
+        val profilOkusaCheckedPosition = bundle?.getInt("profilOkusaChecked", 0)
+        val profilOkusa = ProfilOkusaBiljke.entries[profilOkusaCheckedPosition ?: 0]
+        val klimatskiTipovi = bundle?.getIntegerArrayList("klimatskiTipChecked")?.map { KlimatskiTip.entries[it] }
+        val zemljisniTipovi = bundle?.getIntegerArrayList("zemljisniTipChecked")?.map { Zemljiste.entries[it] }
 
 
+        val novaBiljka = Biljka(
+            nazivBiljke ?: "",
+            porodicaBiljke ?: "",
+            medicinskoUpozorenje ?: "",
+            medicinskeKoristi ?: emptyList(),
+            profilOkusa,
+            listaJela ?: emptyList(),
+            klimatskiTipovi ?: emptyList(),
+            zemljisniTipovi ?: emptyList()
+        )
+        val noveBiljke = biljke + novaBiljka
 
+        biljkeAdapter.updateBiljke(noveBiljke)
     }
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == NOVA_BILJKA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            val novaBiljka = data?.getParcelableExtra<Biljka>("nova_biljka")
-//            novaBiljka?.let {
-//                // Dodavanje nove biljke u listu biljaka i ažuriranje adaptera
-//                biljkeList.add(it)
-//                biljkeAdapter.updateBiljke(biljkeList)
-//            }
-//        }
-//    }
-//
-//    companion object {
-//        const val NOVA_BILJKA_REQUEST_CODE = 1
-//    }
-
-
-
 
 }

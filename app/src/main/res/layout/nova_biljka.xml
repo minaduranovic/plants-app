@@ -8,220 +8,336 @@
     android:layout_margin="20dp"
     tools:context=".NovaBiljkaActivity">
 
-    <TextView
-        android:id="@+id/naslov"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Unos nove biljke"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:cardCornerRadius="8dp">
+
+        <TextView
+            android:id="@+id/naslov"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/mint_green"
+            android:gravity="center"
+            android:text="Unos nove biljke"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="90dp"
         android:layout_marginBottom="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:cardBackgroundColor="@color/yellow_card"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="135dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Naziv biljke: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/nazivET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="135dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Porodica: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/porodicaET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="135dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Medicinsko upozorenje: "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/medicinskoUpozorenjeET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="8dp">
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="152dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Naziv biljke: "
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/nazivET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:text="Medicinske koristi: "
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-            <LinearLayout
+                    <ListView
+                        android:id="@+id/medicinskaKoristLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="195dp"
+                        android:choiceMode="multipleChoice"
+                        android:nestedScrollingEnabled="true" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="8dp"
+                tools:cardCornerRadius="8dp">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="152dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Porodica: "
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/porodicaET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Klimatski tipovi:"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-            <LinearLayout
+                    <ListView
+                        android:id="@+id/klimatskiTipLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="195dp"
+                        android:choiceMode="multipleChoice"
+                        android:nestedScrollingEnabled="true">
+
+                    </ListView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="8dp">
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Medicinsko upozorenje: "
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/medicinskoUpozorenjeET"
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Zemljišni tipovi: "
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/zemljisniTipLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="195dp"
+                        android:choiceMode="multipleChoice"
+                        android:nestedScrollingEnabled="true" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/yellow_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:text="Medicinske koristi: "
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/medicinskaKoristLV"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:choiceMode="multipleChoice"
-                android:nestedScrollingEnabled="true" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Klimatski tipovi:"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/klimatskiTipLV"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:choiceMode="multipleChoice"
-                android:nestedScrollingEnabled="true">
-
-            </ListView>
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Zemljišni tipovi: "
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/zemljisniTipLV"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:choiceMode="multipleChoice"
-                android:nestedScrollingEnabled="true" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Profil okusa:"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/profilOkusaLV"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:choiceMode="singleChoice"
-                android:nestedScrollingEnabled="true" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="117dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Jelo:  "
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/jeloET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="text" />
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Profil okusa:"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-            </LinearLayout>
+                    <ListView
+                        android:id="@+id/profilOkusaLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="195dp"
+                        android:choiceMode="singleChoice"
+                        android:nestedScrollingEnabled="true" />
+                </LinearLayout>
 
-            <Button
-                android:id="@+id/dodajJeloBtn"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="Dodaj jelo"
-                app:cornerRadius="5dp" />
+            </androidx.cardview.widget.CardView>
 
-            <ListView
-                android:id="@+id/jelaLV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="true" />
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                app:cardCornerRadius="8dp">
 
-                <ImageView
-                    android:id="@+id/slikaIV"
-                    android:layout_width="130dp"
-                    android:layout_height="143dp" />
-
-                <Button
-                    android:id="@+id/uslikajBiljkuBtn"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Uslikaj biljku" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="117dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Jelo:  "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/jeloET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/dodajJeloBtn"
+                        android:layout_width="142dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="120dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="Dodaj jelo"
+                        app:cornerRadius="5dp" />
+
+                    <ListView
+                        android:id="@+id/jelaLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="true" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="@color/yellow_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/slikaIV"
+                        android:layout_width="179dp"
+                        android:layout_height="142dp" />
+
+                    <Button
+                        android:id="@+id/uslikajBiljkuBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="43dp"
+                        android:text="Uslikaj biljku"
+                        app:cornerRadius="5dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <Button
                 android:id="@+id/dodajBiljkuBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dodaj biljku" />
+                android:text="Dodaj biljku"
+                app:cornerRadius="8dp" />
 
         </LinearLayout>
 

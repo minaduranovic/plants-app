@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -16,8 +15,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class NovaBiljkaActivity : AppCompatActivity() {
     private lateinit var medicinskaKoristListView: ListView
@@ -97,9 +94,11 @@ class NovaBiljkaActivity : AppCompatActivity() {
         dodajJeloBtn.setOnClickListener {
             if (dodajJeloBtn.text == "Izmijeni jelo") {
                 val novoJelo = jelo.text.toString()
-                if (novoJelo.isNotEmpty()) {
+                if (novoJelo.isNotEmpty() && !listaJela.contains(novoJelo)) {
                     listaJela[selectedJeloPosition] = novoJelo
                     adapter5.notifyDataSetChanged()
+                } else if (novoJelo.isNotEmpty() && listaJela.contains(novoJelo)) {
+                    jelo.setError("Ne mozete unijeti jelo koje vec postoji!")
                 } else {
                     listaJela.removeAt(selectedJeloPosition)
                     adapter5.notifyDataSetChanged()
@@ -111,19 +110,35 @@ class NovaBiljkaActivity : AppCompatActivity() {
             }
         }
 
+
         dodajBiljkuButton.setOnClickListener {
             if (checkAllFields()) {
-                val novaBiljka = dodajNovuBiljku()
-//                val intent = Intent().apply {
-//                    putExtra("nova_biljka", novaBiljka)
-//                }
-//                setResult(Activity.RESULT_OK, intent)
-//                finish()
+                val intent = Intent(this, MainActivity::class.java)
+                val bundle = Bundle().apply {
+                    putString("nazivBiljke", nazivBiljke.text.toString())
+                    putString("porodicaBiljke", porodicaBiljke.text.toString())
+                    putString("medicinskoUpozorenje", medUpoz.text.toString())
+                    putStringArrayList("listaJela", listaJela)
+                    putIntegerArrayList(
+                        "medicinskaKoristChecked",
+                        oznaceneVrijednosti(medicinskaKoristListView)
+                    )
+                    putIntegerArrayList(
+                        "klimatskiTipChecked",
+                        oznaceneVrijednosti(klimatskiTipListView)
+                    )
+                    putIntegerArrayList(
+                        "zemljisniTipChecked",
+                        oznaceneVrijednosti(zemljisniTipListView)
+                    )
+                    putInt("profilOkusaChecked", profilOkusaListView.checkedItemPosition)
+                }
+                intent.putExtras(bundle)
+                startActivity(intent)
             }
         }
 
-        val uslikajBiljkuBtn: Button = findViewById(R.id.uslikajBiljkuBtn)
-        uslikajBiljkuBtn.setOnClickListener {
+        uslikajBiljkuButton.setOnClickListener {
 
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             takePicture.launch(takePictureIntent)
@@ -183,10 +198,6 @@ class NovaBiljkaActivity : AppCompatActivity() {
             medUpoz.setError("Medicinsko upozorenje mora biti u opsegu od 2 do 20 znakova!")
             return false
         }
-//        if (jelo.length()<=2 ||  jelo.length()>20) {
-//            jelo.setError("Jelo mora biti u opsegu od 2 do 20 znakova!")
-//            return false
-//        }
         if (medicinskaKoristListView.checkedItemCount == 0) {
             Toast.makeText(this, "Odaberite barem jednu medicinsku korist!", Toast.LENGTH_SHORT)
                 .show()
@@ -211,51 +222,13 @@ class NovaBiljkaActivity : AppCompatActivity() {
         return true
     }
 
-
-    private fun dodajNovuBiljku(): Biljka {
-        val naziv = nazivBiljke.text.toString()
-        val porodica = porodicaBiljke.text.toString()
-        val medicinskoUpozorenje = medUpoz.text.toString()
-        val medicinskeKoristi = mutableListOf<MedicinskaKorist>()
-        val klimatskiTipovi = mutableListOf<KlimatskiTip>()
-        val zemljisniTipovi = mutableListOf<Zemljiste>()
-
-        for (i in 0 until medicinskaKoristListView.count) {
-            if (medicinskaKoristListView.isItemChecked(i)) {
-                medicinskeKoristi.add(MedicinskaKorist.values()[i])
+    private fun oznaceneVrijednosti(listView: ListView): ArrayList<Int> {
+        val checkedItems = ArrayList<Int>()
+        for (i in 0 until listView.count) {
+            if (listView.isItemChecked(i)) {
+                checkedItems.add(i)
             }
         }
-        for (i in 0 until klimatskiTipListView.count) {
-            if (klimatskiTipListView.isItemChecked(i)) {
-                klimatskiTipovi.add(KlimatskiTip.values()[i])
-            }
-        }
-        for (i in 0 until zemljisniTipListView.count) {
-            if (zemljisniTipListView.isItemChecked(i)) {
-                zemljisniTipovi.add(Zemljiste.values()[i])
-            }
-        }
-        val profilOkusa = ProfilOkusaBiljke.values()[profilOkusaListView.checkedItemPosition]
-        val jela = listaJela
-
-        val novaBiljka = Biljka(
-            naziv,
-            porodica,
-            medicinskoUpozorenje,
-            medicinskeKoristi,
-            profilOkusa,
-            jela,
-            klimatskiTipovi,
-            zemljisniTipovi
-        )
-
-//        listaBiljaka.add(novaBiljka)
-
-//        Toast.makeText(this, "Nova biljka dodana!", Toast.LENGTH_SHORT).show()
-
-//        finish()
-        return novaBiljka
+        return checkedItems
     }
-
-
 }
