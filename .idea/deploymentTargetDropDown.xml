@@ -2,19 +2,22 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="NovaBiljkaActivityTest">
+        <State />
+      </entry>
       <entry key="TestS1">
         <State />
       </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="modChange()">
+      <entry key="jeloETValidation()">
         <State />
       </entry>
-      <entry key="onFilterInMedicinskiModBosiljak()">
+      <entry key="nazivETValidation()">
         <State />
       </entry>
-      <entry key="svakiModImaIspravneIdeve()">
+      <entry key="testNazivETValidation()">
         <State />
       </entry>
     </value>

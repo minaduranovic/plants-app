@@ -96,9 +96,10 @@ class MainActivity : AppCompatActivity() {
             klimatskiTipovi ?: emptyList(),
             zemljisniTipovi ?: emptyList()
         )
-        val noveBiljke = biljke + novaBiljka
-
-        biljkeAdapter.updateBiljke(noveBiljke)
+        if (nazivBiljke!=null) {
+            val noveBiljke = biljke + novaBiljka
+            biljkeAdapter.updateBiljke(noveBiljke)
+        }
     }
 
 }

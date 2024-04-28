@@ -29,6 +29,7 @@
     </androidx.cardview.widget.CardView>
 
     <ScrollView
+        android:id="@+id/sview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="90dp"
@@ -122,10 +123,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/yellow_card"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
@@ -154,10 +155,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/yellow_card"
                 app:cardCornerRadius="8dp"
                 tools:cardCornerRadius="8dp">
 
@@ -187,10 +188,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/yellow_card"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
@@ -218,11 +219,11 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/yellow_card"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
@@ -250,9 +251,9 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:cardBackgroundColor="@color/yellow_card"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
@@ -296,7 +297,7 @@
                     <ListView
                         android:id="@+id/jelaLV"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="195dp"
                         android:nestedScrollingEnabled="true" />
 
                 </LinearLayout>
@@ -304,11 +305,11 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/yellow_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/yellow_card"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.SparseBooleanArray
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -17,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
 class NovaBiljkaActivity : AppCompatActivity() {
+
     private lateinit var medicinskaKoristListView: ListView
     private lateinit var klimatskiTipListView: ListView
     private lateinit var zemljisniTipListView: ListView
@@ -29,7 +31,6 @@ class NovaBiljkaActivity : AppCompatActivity() {
     private lateinit var medUpoz: EditText
     private lateinit var dodajBiljkuButton: Button
     private lateinit var uslikajBiljkuButton: Button
-
     private val listaJela = arrayListOf<String>()
     private lateinit var adapter5: ArrayAdapter<String>
 
@@ -51,31 +52,31 @@ class NovaBiljkaActivity : AppCompatActivity() {
         dodajBiljkuButton = findViewById(R.id.dodajBiljkuBtn)
         uslikajBiljkuButton = findViewById(R.id.uslikajBiljkuBtn)
 
-        val adapter1 = ArrayAdapter<MedicinskaKorist>(
+        val adapter1 = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_multiple_choice,
-            MedicinskaKorist.entries.toTypedArray()
+            MedicinskaKorist.entries.map { it.opis }
         )
         medicinskaKoristListView.adapter = adapter1
 
-        val adapter2 = ArrayAdapter<KlimatskiTip>(
+        val adapter2 = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_multiple_choice,
-            KlimatskiTip.values()
+            KlimatskiTip.entries.map { it.opis }
         )
         klimatskiTipListView.adapter = adapter2
 
-        val adapter3 = ArrayAdapter<Zemljiste>(
+        val adapter3 = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_multiple_choice,
-            Zemljiste.values()
+            Zemljiste.entries.map { it.naziv }
         )
         zemljisniTipListView.adapter = adapter3
 
-        val adapter4 = ArrayAdapter<ProfilOkusaBiljke>(
+        val adapter4 = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_multiple_choice,
-            ProfilOkusaBiljke.values()
+            ProfilOkusaBiljke.entries.map { it.opis }
         )
         profilOkusaListView.adapter = adapter4
 
@@ -94,11 +95,14 @@ class NovaBiljkaActivity : AppCompatActivity() {
         dodajJeloBtn.setOnClickListener {
             if (dodajJeloBtn.text == "Izmijeni jelo") {
                 val novoJelo = jelo.text.toString()
-                if (novoJelo.isNotEmpty() && !listaJela.contains(novoJelo)) {
+
+                if (novoJelo.isNotEmpty() && !listaJela.contains(novoJelo) && novoJelo.length >= 2 && novoJelo.length <= 20) {
                     listaJela[selectedJeloPosition] = novoJelo
                     adapter5.notifyDataSetChanged()
                 } else if (novoJelo.isNotEmpty() && listaJela.contains(novoJelo)) {
-                    jelo.setError("Ne mozete unijeti jelo koje vec postoji!")
+                    jelo.error = "Ne mozete unijeti jelo koje vec postoji!"
+                } else if (novoJelo.length == 1 || novoJelo.length > 20) {
+                    jelo.error = "Jelo mora biti u opsegu od 2 do 20 znakova!"
                 } else {
                     listaJela.removeAt(selectedJeloPosition)
                     adapter5.notifyDataSetChanged()
@@ -110,9 +114,10 @@ class NovaBiljkaActivity : AppCompatActivity() {
             }
         }
 
-
         dodajBiljkuButton.setOnClickListener {
-            if (checkAllFields()) {
+            var f1 = validirajPolja()
+            var f2 = validirajLV()
+            if (f1 && f2) {
                 val intent = Intent(this, MainActivity::class.java)
                 val bundle = Bundle().apply {
                     putString("nazivBiljke", nazivBiljke.text.toString())
@@ -121,15 +126,15 @@ class NovaBiljkaActivity : AppCompatActivity() {
                     putStringArrayList("listaJela", listaJela)
                     putIntegerArrayList(
                         "medicinskaKoristChecked",
-                        oznaceneVrijednosti(medicinskaKoristListView)
+                        medicinskaKoristListView.checkedItemPositions.toArrayList()
                     )
                     putIntegerArrayList(
                         "klimatskiTipChecked",
-                        oznaceneVrijednosti(klimatskiTipListView)
+                        klimatskiTipListView.checkedItemPositions.toArrayList()
                     )
                     putIntegerArrayList(
                         "zemljisniTipChecked",
-                        oznaceneVrijednosti(zemljisniTipListView)
+                        zemljisniTipListView.checkedItemPositions.toArrayList()
                     )
                     putInt("profilOkusaChecked", profilOkusaListView.checkedItemPosition)
                 }
@@ -146,89 +151,112 @@ class NovaBiljkaActivity : AppCompatActivity() {
         }
     }
 
-    private val takePicture =
+    var takePicture =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                val imageBitmap = data?.extras?.get("data") as Bitmap
+            try {
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+                    val imageView: ImageView = findViewById(R.id.slikaIV)
+                    imageView.visibility = View.VISIBLE
+                    imageView.setImageBitmap(imageBitmap)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Došlo je do greške.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        try {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                val imageBitmap = data?.extras?.get("data") as? Bitmap
                 val imageView: ImageView = findViewById(R.id.slikaIV)
                 imageView.visibility = View.VISIBLE
                 imageView.setImageBitmap(imageBitmap)
             }
-        }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            val imageView: ImageView = findViewById(R.id.slikaIV)
-            imageView.visibility = View.VISIBLE
-            imageView.setImageBitmap(imageBitmap)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Došlo je do greške.", Toast.LENGTH_SHORT).show()
         }
     }
 
     companion object {
-        private const val REQUEST_IMAGE_CAPTURE = 1
+        const val REQUEST_IMAGE_CAPTURE = 1
     }
 
     private fun addJelaToList() {
         val novoJelo = jelo.text.toString()
-        if (novoJelo.length <= 2 || novoJelo.length > 20) jelo.setError("Jelo mora biti u opsegu od 2 do 20 znakova!")
-        fun List<String>.lowerCase(): List<String> = this.map { it.lowercase() }
+        if (novoJelo.length < 2 || novoJelo.length > 20) {
+            jelo.error = "Jelo mora biti u opsegu od 2 do 20 znakova!"
+            return
+        }
         if (novoJelo.isNotEmpty()) {
-            if (listaJela.lowerCase().contains(novoJelo.lowercase())) {
-                jelo.setError("Ne mozete unijeti jelo koje vec postoji!")
+            if (listaJela.map { it.lowercase() }.contains(novoJelo.lowercase())) {
+                jelo.error = "Ne mozete unijeti jelo koje vec postoji!"
+            } else {
+                listaJela.add(0, novoJelo)
+                adapter5.notifyDataSetChanged()
+                jelo.setText("")
             }
-            listaJela.add(0, novoJelo)
-            adapter5.notifyDataSetChanged()
-            jelo.setText("")
         }
     }
 
-    private fun checkAllFields(): Boolean {
-        if (nazivBiljke.length() <= 2 || nazivBiljke.length() > 20) {
-            nazivBiljke.setError("Naziv biljke mora biti u opsegu od 2 do 20 znakova!")
-            return false
+    private fun validirajPolja(): Boolean {
+        var flag = true
+
+        if (nazivBiljke.text.length !in 2..20) {
+            nazivBiljke.error = "Naziv biljke mora biti u opsegu od 2 do 20 znakova!"
+            flag = false
         }
-        if (porodicaBiljke.length() <= 2 || porodicaBiljke.length() > 20) {
-            porodicaBiljke.setError("Porodica biljke mora biti u opsegu od 2 do 20 znakova!")
-            return false
+        if (porodicaBiljke.text.length !in 2..20) {
+            porodicaBiljke.error = "Porodica biljke mora biti u opsegu od 2 do 20 znakova!"
+            flag = false
         }
-        if (medUpoz.length() <= 2 || medUpoz.length() > 20) {
-            medUpoz.setError("Medicinsko upozorenje mora biti u opsegu od 2 do 20 znakova!")
-            return false
+        if (medUpoz.text.length !in 2..20) {
+            medUpoz.error = "Medicinsko upozorenje mora biti u opsegu od 2 do 20 znakova!"
+            flag = false
         }
+        return flag
+    }
+
+    private fun validirajLV(): Boolean {
+
+        var flag = true
+
         if (medicinskaKoristListView.checkedItemCount == 0) {
             Toast.makeText(this, "Odaberite barem jednu medicinsku korist!", Toast.LENGTH_SHORT)
                 .show()
-            return false
+            flag = false
         }
         if (klimatskiTipListView.checkedItemCount == 0) {
             Toast.makeText(this, "Odaberite barem jedan klimatski tip!", Toast.LENGTH_SHORT).show()
-            return false
+            flag = false
         }
         if (zemljisniTipListView.checkedItemCount == 0) {
             Toast.makeText(this, "Odaberite barem jedan zemljisni tip!", Toast.LENGTH_SHORT).show()
-            return false
+            flag = false
         }
         if (profilOkusaListView.checkedItemCount == 0) {
             Toast.makeText(this, "Odaberite profil okusa biljke!", Toast.LENGTH_SHORT).show()
-            return false
+            flag = false
         }
         if (jelaListView.adapter.count == 0) {
             Toast.makeText(this, "Morate dodati bar jedno jelo!", Toast.LENGTH_SHORT).show()
-            return false
+            flag = false
         }
-        return true
+        return flag
     }
 
-    private fun oznaceneVrijednosti(listView: ListView): ArrayList<Int> {
-        val checkedItems = ArrayList<Int>()
-        for (i in 0 until listView.count) {
-            if (listView.isItemChecked(i)) {
-                checkedItems.add(i)
+    private fun SparseBooleanArray.toArrayList(): ArrayList<Int> {
+        val odabrane = ArrayList<Int>()
+        for (i in 0 until size()) {
+            if (valueAt(i)) {
+                odabrane.add(keyAt(i))
             }
         }
-        return checkedItems
+        return odabrane
     }
 }
+
