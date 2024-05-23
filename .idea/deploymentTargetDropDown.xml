@@ -5,7 +5,7 @@
       <entry key="NovaBiljkaActivityTest">
         <State />
       </entry>
-      <entry key="TestS1">
+      <entry key="TestS1a">
         <State />
       </entry>
       <entry key="app">
@@ -14,10 +14,10 @@
       <entry key="jeloETValidation()">
         <State />
       </entry>
-      <entry key="nazivETValidation()">
+      <entry key="testCameraIntent()">
         <State />
       </entry>
-      <entry key="testNazivETValidation()">
+      <entry key="testPrelazakIzNovaBiljkaUMainActivity()">
         <State />
       </entry>
     </value>
