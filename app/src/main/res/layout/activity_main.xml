@@ -31,21 +31,22 @@
         app:layout_constraintBottom_toTopOf="@+id/biljkeRV"
         app:layout_constraintEnd_toStartOf="@+id/novaBiljkaBtn"
         app:layout_constraintStart_toEndOf="@+id/modSpinner"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.333" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/biljkeRV"
         android:layout_width="wrap_content"
-        android:layout_height="622dp"
+        android:layout_height="580dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
         android:clipToPadding="false"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:scrollbarSize="5dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bojaSPIN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +63,53 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.613"
         app:layout_constraintStart_toEndOf="@+id/resetBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.333" />
+
+    <EditText
+        android:id="@+id/pretragaET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="691dp"
+        android:hint="Unesite naziv biljke"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bojaSPIN"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/biljkeRV" />
+
+    <Spinner
+        android:id="@+id/bojaSPIN"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_margin="10dp"
+        android:entries="@array/boje_array"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/brzaPretraga"
+        app:layout_constraintStart_toEndOf="@+id/pretragaET"
+        app:layout_constraintTop_toBottomOf="@+id/biljkeRV" />
+
+    <Button
+        android:id="@+id/brzaPretraga"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="115dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Brza pretraga"
+        android:textAlignment="center"
+        android:textSize="9dp"
+        android:visibility="gone"
+        app:cornerRadius="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bojaSPIN"
+        app:layout_constraintTop_toBottomOf="@+id/biljkeRV" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

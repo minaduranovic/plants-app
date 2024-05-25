@@ -4,7 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -36,6 +39,7 @@ class BiljkaListAdapter(
         val biljkaPorodica: TextView = itemView.findViewById(R.id.porodicaItem)
         val biljkaZemljisniTip: TextView = itemView.findViewById(R.id.zemljisniTipItem)
         val biljkaKlimatskiTip: TextView = itemView.findViewById(R.id.klimatskiTipItem)
+
 
         fun prikazModova(mod: String) {
             when (mod) {
@@ -107,7 +111,7 @@ class BiljkaListAdapter(
             holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.opis ?: ""
             holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.opis ?: ""
         } else if (mod == "Kuharski") {
-            holder.biljkaProfilOkusa.text = biljka.profilOkusa.opis
+            holder.biljkaProfilOkusa.text = biljka.profilOkusa!!.opis
             holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
             holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""
             holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: ""

@@ -16,6 +16,11 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NovaBiljkaActivity : AppCompatActivity() {
 
@@ -33,6 +38,7 @@ class NovaBiljkaActivity : AppCompatActivity() {
     private lateinit var uslikajBiljkuButton: Button
     private val listaJela = arrayListOf<String>()
     private lateinit var adapter5: ArrayAdapter<String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,33 +119,68 @@ class NovaBiljkaActivity : AppCompatActivity() {
                 addJelaToList()
             }
         }
-
+//        dodajBiljkuButton.setOnClickListener {
+//            var f1 = validirajPolja()
+//            var f2 = validirajLV()
+//            if (f1 && f2) {
+//                val intent = Intent(this, MainActivity::class.java)
+//                val bundle = Bundle().apply {
+//                    putString("nazivBiljke", nazivBiljke.text.toString())
+//                    putString("porodicaBiljke", porodicaBiljke.text.toString())
+//                    putString("medicinskoUpozorenje", medUpoz.text.toString())
+//                    putStringArrayList("listaJela", listaJela)
+//                    putIntegerArrayList(
+//                        "medicinskaKoristChecked",
+//                        medicinskaKoristListView.checkedItemPositions.toArrayList()
+//                    )
+//                    putIntegerArrayList(
+//                        "klimatskiTipChecked",
+//                        klimatskiTipListView.checkedItemPositions.toArrayList()
+//                    )
+//                    putIntegerArrayList(
+//                        "zemljisniTipChecked",
+//                        zemljisniTipListView.checkedItemPositions.toArrayList()
+//                    )
+//                    putInt("profilOkusaChecked", profilOkusaListView.checkedItemPosition)
+//                }
+//                intent.putExtras(bundle)
+//                startActivity(intent)
+//            }
+//        }
         dodajBiljkuButton.setOnClickListener {
-            var f1 = validirajPolja()
-            var f2 = validirajLV()
+            val f1 = validirajPolja()
+            val f2 = validirajLV()
+            var novaBiljka: Biljka? = null
+            var fixedBiljka: Biljka? = null
+
             if (f1 && f2) {
-                val intent = Intent(this, MainActivity::class.java)
-                val bundle = Bundle().apply {
-                    putString("nazivBiljke", nazivBiljke.text.toString())
-                    putString("porodicaBiljke", porodicaBiljke.text.toString())
-                    putString("medicinskoUpozorenje", medUpoz.text.toString())
-                    putStringArrayList("listaJela", listaJela)
-                    putIntegerArrayList(
-                        "medicinskaKoristChecked",
-                        medicinskaKoristListView.checkedItemPositions.toArrayList()
-                    )
-                    putIntegerArrayList(
-                        "klimatskiTipChecked",
-                        klimatskiTipListView.checkedItemPositions.toArrayList()
-                    )
-                    putIntegerArrayList(
-                        "zemljisniTipChecked",
-                        zemljisniTipListView.checkedItemPositions.toArrayList()
-                    )
-                    putInt("profilOkusaChecked", profilOkusaListView.checkedItemPosition)
+                novaBiljka = Biljka(
+                    naziv = nazivBiljke.text.toString(),
+                    porodica = porodicaBiljke.text.toString(),
+                    medicinskoUpozorenje = medUpoz.text.toString(),
+                    medicinskeKoristi = medicinskaKoristListView.checkedItemPositions.toArrayList().map { MedicinskaKorist.entries[it] },
+                    profilOkusa = profilOkusaListView.checkedItemPosition.let { ProfilOkusaBiljke.entries.getOrNull(it) },
+                    jela = listaJela,
+                    klimatskiTipovi = klimatskiTipListView.checkedItemPositions.toArrayList().map { KlimatskiTip.entries[it] },
+                    zemljisniTipovi = zemljisniTipListView.checkedItemPositions.toArrayList().map { Zemljiste.entries[it] }
+                )
+
+                val scope = CoroutineScope(Job() + Dispatchers.Main)
+                val trefleDAO = TrefleDAO()
+
+                scope.launch {
+                    fixedBiljka = withContext(Dispatchers.IO) {
+                        trefleDAO.fixData(novaBiljka)
+                    }
+
+                    if (fixedBiljka!= null) {
+                        val intent = Intent(this@NovaBiljkaActivity, MainActivity::class.java)
+                        intent.putExtra(NOVA_BILJKA, fixedBiljka)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this@NovaBiljkaActivity, "Greška pri dodavanju biljke", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                intent.putExtras(bundle)
-                startActivity(intent)
             }
         }
 
@@ -184,6 +225,7 @@ class NovaBiljkaActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 1
+        var NOVA_BILJKA = "nova_biljka"
     }
 
     private fun addJelaToList() {

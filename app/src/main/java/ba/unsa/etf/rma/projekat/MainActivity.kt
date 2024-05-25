@@ -6,10 +6,15 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,9 +22,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var biljkeAdapter: BiljkaListAdapter
     private var biljkeList = getBiljkeList()
     override fun onCreate(savedInstanceState: Bundle?) {
+        setContentView(R.layout.activity_main)
+
+        val pretragaEditText: EditText = findViewById(R.id.pretragaET)
+        val brzaPretraga: Button = findViewById(R.id.brzaPretraga)
+        val spinnerBoja: Spinner = findViewById(R.id.bojaSPIN)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+
+        pretragaEditText.visibility = View.GONE
+        brzaPretraga.visibility = View.GONE
+        spinnerBoja.visibility = View.GONE
 
         val spinner: Spinner = findViewById(R.id.modSpinner)
         ArrayAdapter.createFromResource(
@@ -41,9 +55,27 @@ class MainActivity : AppCompatActivity() {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
 
                 when (selectedItem) {
-                    "Medicinski" -> biljkeAdapter.updateMod("Medicinski")
-                    "Kuharski" -> biljkeAdapter.updateMod("Kuharski")
-                    "Botanički" -> biljkeAdapter.updateMod("Botanički")
+                    "Medicinski" -> {
+                        biljkeAdapter.updateMod("Medicinski")
+                        pretragaEditText.visibility = View.GONE
+                        brzaPretraga.visibility = View.GONE
+                        spinnerBoja.visibility = View.GONE
+                    }
+
+                    "Kuharski" -> {
+                        biljkeAdapter.updateMod("Kuharski")
+                        pretragaEditText.visibility = View.GONE
+                        brzaPretraga.visibility = View.GONE
+                        spinnerBoja.visibility = View.GONE
+                    }
+
+                    "Botanički" -> {
+                        pretragaEditText.visibility = View.VISIBLE
+                        brzaPretraga.visibility = View.VISIBLE
+                        spinnerBoja.visibility = View.VISIBLE
+                        biljkeAdapter.updateMod("Botanički")
+
+                    }
                 }
             }
 
@@ -51,6 +83,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.boje_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerBoja.adapter = adapter
+        }
+
+        val trefleDAO = TrefleDAO()
+        val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
+        brzaPretraga.setOnClickListener {
+            val pretragaText = pretragaEditText.text.toString()
+            val selectedColor = spinnerBoja.selectedItem.toString()
+
+            if (pretragaText.isNotEmpty() && selectedColor.isNotEmpty()) {
+                coroutineScope.launch {
+                    val filteredPlants =
+                        trefleDAO.getPlantsWithFlowerColor(selectedColor, pretragaText)
+                    biljkeAdapter.updateBiljke(filteredPlants)
+                }
+            }
+        }
+        
         val resetButton: Button = findViewById<Button>(R.id.resetBtn)
         resetButton.setOnClickListener {
             biljkeList = getBiljkeList()
@@ -74,31 +131,34 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val bundle = intent.extras
-        val nazivBiljke = bundle?.getString("nazivBiljke")
-        val porodicaBiljke = bundle?.getString("porodicaBiljke")
-        val medicinskoUpozorenje = bundle?.getString("medicinskoUpozorenje")
-        val listaJela = bundle?.getStringArrayList("listaJela")
-        val medicinskeKoristi = bundle?.getIntegerArrayList("medicinskaKoristChecked")?.map { MedicinskaKorist.entries[it] }
-        val profilOkusaCheckedPosition = bundle?.getInt("profilOkusaChecked", 0)
-        val profilOkusa = ProfilOkusaBiljke.entries[profilOkusaCheckedPosition ?: 0]
-        val klimatskiTipovi = bundle?.getIntegerArrayList("klimatskiTipChecked")?.map { KlimatskiTip.entries[it] }
-        val zemljisniTipovi = bundle?.getIntegerArrayList("zemljisniTipChecked")?.map { Zemljiste.entries[it] }
-
-
-        val novaBiljka = Biljka(
-            nazivBiljke ?: "",
-            porodicaBiljke ?: "",
-            medicinskoUpozorenje ?: "",
-            medicinskeKoristi ?: emptyList(),
-            profilOkusa,
-            listaJela ?: emptyList(),
-            klimatskiTipovi ?: emptyList(),
-            zemljisniTipovi ?: emptyList()
-        )
-        if (nazivBiljke!=null) {
-            val noveBiljke = biljke + novaBiljka
-            biljkeAdapter.updateBiljke(noveBiljke)
+//        val bundle = intent.extras
+//        val nazivBiljke = bundle?.getString("nazivBiljke")
+//        val porodicaBiljke = bundle?.getString("porodicaBiljke")
+//        val medicinskoUpozorenje = bundle?.getString("medicinskoUpozorenje")
+//        val listaJela = bundle?.getStringArrayList("listaJela")
+//        val medicinskeKoristi = bundle?.getIntegerArrayList("medicinskaKoristChecked")?.map { MedicinskaKorist.entries[it] }
+//        val profilOkusaCheckedPosition = bundle?.getInt("profilOkusaChecked", 0)
+//        val profilOkusa = ProfilOkusaBiljke.entries[profilOkusaCheckedPosition ?: 0]
+//        val klimatskiTipovi = bundle?.getIntegerArrayList("klimatskiTipChecked")?.map { KlimatskiTip.entries[it] }
+//        val zemljisniTipovi = bundle?.getIntegerArrayList("zemljisniTipChecked")?.map { Zemljiste.entries[it] }
+//
+//
+//        val novaBiljka = Biljka(
+//            nazivBiljke ?: "",
+//            porodicaBiljke ?: "",
+//            medicinskoUpozorenje ?: "",
+//            medicinskeKoristi ?: emptyList(),
+//            profilOkusa,
+//            listaJela ?: emptyList(),
+//            klimatskiTipovi ?: emptyList(),
+//            zemljisniTipovi ?: emptyList()
+//        )
+        val novaBiljka: Biljka? = intent.getParcelableExtra(NovaBiljkaActivity.NOVA_BILJKA)
+        if (novaBiljka != null) {
+            if (novaBiljka.naziv != null) {
+                val noveBiljke = biljke + novaBiljka
+                biljkeAdapter.updateBiljke(noveBiljke)
+            }
         }
     }
 
