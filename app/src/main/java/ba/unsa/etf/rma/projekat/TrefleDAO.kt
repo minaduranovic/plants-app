@@ -82,9 +82,8 @@ class TrefleDAO {
 //                    plants.forEach { plant ->
 //                        Log.d("TrefleDAO", " biljka: commonName=${plant.commonName}, scientificName=${plant.scientificName}")
 //                    }
-
+//                    it.commonName?.contains(substr, ignoreCase = true) == true || izbaceno odozdo
                     val filteredPlants = plants.filter {
-                        it.commonName?.contains(substr, ignoreCase = true) == true ||
                                 it.scientificName?.contains(substr, ignoreCase = true) == true
                     }
 

@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.projekat
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,11 +100,20 @@ class BiljkaListAdapter(
     override fun getItemCount(): Int = biljke.size
 
     override fun onBindViewHolder(holder: BiljkaViewHolder, position: Int) {
+        if (biljke.isEmpty() || position >= biljke.size) {
+            Log.e(
+                "BiljkaListAdapter",
+                "prazno"
+            )
+            return
+        }
+
         val biljka = biljke[position]
         holder.biljkaTitle.text = biljka.naziv
 
         val koristi = biljka.medicinskeKoristi.toList()
         val jela = biljka.jela
+
 
         if (mod == "Medicinski") {
             holder.biljkaUpozorenje.text = biljka.medicinskoUpozorenje
@@ -111,16 +121,16 @@ class BiljkaListAdapter(
             holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.opis ?: ""
             holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.opis ?: ""
         } else if (mod == "Kuharski") {
-            holder.biljkaProfilOkusa.text = biljka.profilOkusa!!.opis
+            holder.biljkaProfilOkusa.text = biljka.profilOkusa?.opis?:""
             holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
             holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""
             holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: ""
         } else if (mod == "Botanički") {
             holder.biljkaPorodica.text = biljka.porodica
             holder.biljkaKlimatskiTip.text =
-                biljka.klimatskiTipovi.elementAt(0).opis
+                biljka.klimatskiTipovi.getOrNull(0)?.opis?:""
             holder.biljkaZemljisniTip.text =
-                biljka.zemljisniTipovi.elementAt(0).naziv
+                biljka.zemljisniTipovi.getOrNull(0)?.naziv?:""
         }
 
         coroutineScope.launch {
@@ -139,22 +149,34 @@ class BiljkaListAdapter(
                 "Botanički" -> filterBotanicki(selectedPlant)
             }
         }
+
+
     }
 
     private fun filterMedicinski(selectedPlant: Biljka) {
-        val filteredList = biljke.filter { it == selectedPlant || it.medicinskeKoristi.any { korist ->
-            selectedPlant.medicinskeKoristi.any { it.opis == korist.opis }
-        } }
+        val filteredList = biljke.filter {
+            it == selectedPlant || it.medicinskeKoristi.any { korist ->
+                selectedPlant.medicinskeKoristi.any { it.opis == korist.opis }
+            }
+        }
         updateBiljke(filteredList)
     }
 
     private fun filterKuharski(selectedPlant: Biljka) {
-        val filteredList = biljke.filter { it == selectedPlant || it.jela.intersect(selectedPlant.jela).isNotEmpty() || it.profilOkusa == selectedPlant.profilOkusa }
+        val filteredList = biljke.filter {
+            it == selectedPlant || it.jela.intersect(selectedPlant.jela)
+                .isNotEmpty() || it.profilOkusa == selectedPlant.profilOkusa
+        }
         updateBiljke(filteredList)
     }
 
     private fun filterBotanicki(selectedPlant: Biljka) {
-        val filteredList = biljke.filter { it == selectedPlant || (it.porodica == selectedPlant.porodica && (it.klimatskiTipovi.intersect(selectedPlant.klimatskiTipovi).isNotEmpty() && it.zemljisniTipovi.intersect(selectedPlant.zemljisniTipovi).isNotEmpty())) }
+        val filteredList = biljke.filter {
+            it == selectedPlant || (it.porodica == selectedPlant.porodica && (it.klimatskiTipovi.intersect(
+                selectedPlant.klimatskiTipovi
+            ).isNotEmpty() && it.zemljisniTipovi.intersect(selectedPlant.zemljisniTipovi)
+                .isNotEmpty()))
+        }
         updateBiljke(filteredList)
     }
 
@@ -163,8 +185,10 @@ class BiljkaListAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateBiljke(biljke: List<Biljka>) {
-        this.biljke = biljke
+    fun updateBiljke(biljke2: List<Biljka>) {
+        biljke = biljke2
+//        Log.d("BiljkaListAdapter", "updateovano")
+//        Log.d("BiljkaListAdapter", "filtrirane biljke : ${biljke.size}")
         notifyDataSetChanged()
     }
 }

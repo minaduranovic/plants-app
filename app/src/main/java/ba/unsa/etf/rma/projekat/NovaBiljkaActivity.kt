@@ -248,7 +248,7 @@ class NovaBiljkaActivity : AppCompatActivity() {
     private fun validirajPolja(): Boolean {
         var flag = true
 
-        if (nazivBiljke.text.length !in 2..20) {
+        if (nazivBiljke.text.length !in 2..40) {
             nazivBiljke.error = "Naziv biljke mora biti u opsegu od 2 do 20 znakova!"
             flag = false
         }

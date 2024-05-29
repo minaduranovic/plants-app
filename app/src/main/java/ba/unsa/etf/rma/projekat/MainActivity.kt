@@ -2,6 +2,7 @@ package ba.unsa.etf.rma.projekat
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var biljkeView: RecyclerView
     private lateinit var biljkeAdapter: BiljkaListAdapter
     private var biljkeList = getBiljkeList()
+//    private lateinit var noveBiljke: List<Biljka>
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
 
@@ -57,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 when (selectedItem) {
                     "Medicinski" -> {
                         biljkeAdapter.updateMod("Medicinski")
+                        biljkeAdapter.updateBiljke(biljke)
                         pretragaEditText.visibility = View.GONE
                         brzaPretraga.visibility = View.GONE
                         spinnerBoja.visibility = View.GONE
@@ -64,12 +67,14 @@ class MainActivity : AppCompatActivity() {
 
                     "Kuharski" -> {
                         biljkeAdapter.updateMod("Kuharski")
+                        biljkeAdapter.updateBiljke(biljke)
                         pretragaEditText.visibility = View.GONE
                         brzaPretraga.visibility = View.GONE
                         spinnerBoja.visibility = View.GONE
                     }
 
                     "Botanički" -> {
+                        biljkeAdapter.updateBiljke(biljke)
                         pretragaEditText.visibility = View.VISIBLE
                         brzaPretraga.visibility = View.VISIBLE
                         spinnerBoja.visibility = View.VISIBLE
@@ -98,11 +103,13 @@ class MainActivity : AppCompatActivity() {
         brzaPretraga.setOnClickListener {
             val pretragaText = pretragaEditText.text.toString()
             val selectedColor = spinnerBoja.selectedItem.toString()
+            biljkeAdapter.updateMod("Botanički")
 
             if (pretragaText.isNotEmpty() && selectedColor.isNotEmpty()) {
                 coroutineScope.launch {
                     val filteredPlants =
                         trefleDAO.getPlantsWithFlowerColor(selectedColor, pretragaText)
+                    Log.d("MainActivity", "filtrirane biljke iz maina : ${filteredPlants.size}" )
                     biljkeAdapter.updateBiljke(filteredPlants)
                 }
             }
@@ -111,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         val resetButton: Button = findViewById<Button>(R.id.resetBtn)
         resetButton.setOnClickListener {
             biljkeList = getBiljkeList()
-            biljkeAdapter.updateBiljke(biljkeList)
+            biljkeAdapter.updateBiljke(biljke)
         }
 
         biljkeView = findViewById(R.id.biljkeRV)
@@ -122,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         )
         biljkeAdapter = BiljkaListAdapter(listOf())
         biljkeView.adapter = biljkeAdapter
-        biljkeAdapter.updateBiljke(biljkeList)
+        biljkeAdapter.updateBiljke(biljke)
 
         val dodajButton: Button = findViewById<Button>(R.id.novaBiljkaBtn)
         dodajButton.setOnClickListener {
@@ -156,8 +163,8 @@ class MainActivity : AppCompatActivity() {
         val novaBiljka: Biljka? = intent.getParcelableExtra(NovaBiljkaActivity.NOVA_BILJKA)
         if (novaBiljka != null) {
             if (novaBiljka.naziv != null) {
-                val noveBiljke = biljke + novaBiljka
-                biljkeAdapter.updateBiljke(noveBiljke)
+                 biljke += novaBiljka
+                biljkeAdapter.updateBiljke(biljke)
             }
         }
     }
