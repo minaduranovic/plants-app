@@ -94,7 +94,7 @@ class TrefleDAO {
 
                     return@withContext filteredPlants.map { plant ->
                         Biljka(
-                            naziv = plant.commonName ?: "",
+                            naziv = (plant.commonName + " (" + plant.scientificName + ")") ?: "",
                             porodica = plant.family ?: "",
                             medicinskoUpozorenje = null,
                             medicinskeKoristi = listOf(),
