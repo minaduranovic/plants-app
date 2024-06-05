@@ -2,22 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="NovaBiljkaActivityTest">
-        <State />
-      </entry>
       <entry key="TestS1a">
         <State />
       </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="jeloETValidation()">
-        <State />
-      </entry>
-      <entry key="testCameraIntent()">
-        <State />
-      </entry>
-      <entry key="testPrelazakIzNovaBiljkaUMainActivity()">
         <State />
       </entry>
     </value>

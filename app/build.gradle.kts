@@ -67,7 +67,7 @@ dependencies {
 
     androidTestImplementation("androidx.test:core-ktx:1.5.0")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation("org.hamcrest:hamcrest:x.y")
+    testImplementation("org.hamcrest:hamcrest:2.2")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
 
@@ -77,4 +77,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1-Beta")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    testImplementation ("org.assertj:assertj-core:3.22.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+
+
 }

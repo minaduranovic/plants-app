@@ -1,18 +1,32 @@
 package ba.unsa.etf.rma.projekat
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.net.URL
 
 class TrefleDAO {
 
 
-    private var defaultBitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).apply {
-        eraseColor(android.graphics.Color.WHITE) }
+//    private var defaultBitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).apply {
+//        eraseColor(android.graphics.Color.WHITE) }
 
+  private  lateinit var context: Context
+
+    fun setContext(context: Context) {
+        this.context = context
+    }
+
+    private fun getDefaultBitmap(): Bitmap {
+        return BitmapFactory.decodeResource(context.resources, R.drawable.plant)
+    }
          suspend fun getImage(biljka: Biljka): Bitmap = withContext(Dispatchers.IO) {
             try {
                 val latinskiNaziv= latinski(biljka.naziv.toString())
@@ -30,7 +44,7 @@ class TrefleDAO {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return@withContext defaultBitmap
+            return@withContext getDefaultBitmap()
         }
 
     suspend fun fixData(biljka: Biljka): Biljka = withContext(Dispatchers.IO) {
@@ -39,10 +53,10 @@ class TrefleDAO {
             val searchResponse = ApiAdapter.retrofit.searchPlants(latinskiNaziv)
             if (searchResponse.isSuccessful) {
                 val plants = searchResponse.body()?.data
-                Log.d("TrefleDAO", "searchResponse: ${biljka.naziv}")
+//                Log.d("TrefleDAO", "searchResponse: ${biljka.naziv}")
 
                 if (!plants.isNullOrEmpty()) {
-                    Log.d("TrefleDAO", "nullor empty: ${biljka.naziv}")
+//                    Log.d("TrefleDAO", "nullor empty: ${biljka.naziv}")
 
                     val trefleSearchPlant = plants[0]
                     val plantId = trefleSearchPlant.id
@@ -50,16 +64,16 @@ class TrefleDAO {
                     if (retrieveResponse.isSuccessful) {
                         val plant = retrieveResponse.body()?.data
                         if (plant != null) {
-                            Log.d("TrefleDAO", "prije ${biljka.porodica} to ${plant.mainSpecies?.family}")
+//                            Log.d("TrefleDAO", "prije ${biljka.porodica} to ${plant.mainSpecies?.family}")
                             updateFamilyName(biljka, plant)
-                            Log.d("TrefleDAO", "poslije: ${biljka.porodica}")
+//                            Log.d("TrefleDAO", "poslije: ${biljka.porodica}")
                             updateEdibleStatus(biljka, plant)
                             updateMedicalWarning(biljka, plant)
                             updateSoilTextures(biljka, plant)
                             updateClimateTypes(biljka, plant)
                         }
                     } else {
-                        Log.d("TrefleDAO", "neuspjesno: ${biljka.naziv}")
+//                        Log.d("TrefleDAO", "neuspjesno: ${biljka.naziv}")
 
                     }
                 }
@@ -67,53 +81,75 @@ class TrefleDAO {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        Log.d("TrefleDAO", "fixData finished for biljka: ${biljka.naziv}")
+//        Log.d("TrefleDAO", "fixData finished for biljka: ${biljka.naziv}")
         return@withContext biljka
     }
 
+
     suspend fun getPlantsWithFlowerColor(flowerColor: String, substr: String): List<Biljka> {
         return withContext(Dispatchers.IO) {
-            val response = ApiAdapter.retrofit.getPlantsByFlowerColor(flowerColor)
+            var ids=  mutableListOf<Int>()
+            val filteredPlants = mutableListOf<TrefleRetrieveBiljka>()
+            val response = ApiAdapter.retrofit.searchPlants(substr)
             if (response.isSuccessful) {
                 val plants = response.body()?.data
-                Log.d("TrefleDAO", "Response velicina liste: ${plants?.size}")
-
-                if (plants != null) {
+//                Log.d("TrefleDAO", "Response velicina liste: ${plants?.size}")
+                if (!plants.isNullOrEmpty()){
+                    for (p in plants){
+                        ids.add(p.id)
+                    }
+                }
+                for (i in ids){
+                    val responsePlant= ApiAdapter.retrofit.getPlant(i)
+                    if (responsePlant.isSuccessful){
+                        val boje = responsePlant.body()?.data?.mainSpecies?.flower?.colors
+                        val biljka = responsePlant.body()?.data
+//                        Log.d("TrefleDAO", "filtrirana biljka : commonName=${biljka?.commonName}, scientificName=${biljka?.scientificName}")
+//                        Log.d("TrefleDAO", "boje${boje?.size}")
+//
+                        if (boje!=null && boje.contains(flowerColor) && (biljka?.commonName?.contains(substr, ignoreCase = true) == true || biljka?.scientificName?.contains(substr, ignoreCase = true)==true) ){
+                            filteredPlants+= biljka
+                        }
+                    }
+                }
+                if (filteredPlants != null) {
 //                    plants.forEach { plant ->
 //                        Log.d("TrefleDAO", " biljka: commonName=${plant.commonName}, scientificName=${plant.scientificName}")
 //                    }
 //                    it.commonName?.contains(substr, ignoreCase = true) == true || izbaceno odozdo
-                    val filteredPlants = plants.filter {
-                                it.scientificName?.contains(substr, ignoreCase = true) == true
-                    }
+//                    val filteredPlants = plants.filter {
+//                                it.scientificName?.contains(substr, ignoreCase = true) == true || it.commonName?.contains(substr, ignoreCase = true) == true
+//                    }
 
-                    Log.d("TrefleDAO", "filtrirano velicina: ${filteredPlants.size}")
-                    filteredPlants.forEach { plant ->
-                        Log.d("TrefleDAO", "filtrirana biljka : commonName=${plant.commonName}, scientificName=${plant.scientificName}")
-                    }
+//                    Log.d("TrefleDAO", "filtrirano velicina: ${filteredPlants.size}")
+//                    filteredPlants.forEach { plant ->
+////                        Log.d("TrefleDAO", "filtrirana biljka : commonName=${plant.commonName}, scientificName=${plant.scientificName}")
+//                    }
 
                     return@withContext filteredPlants.map { plant ->
                         Biljka(
                             naziv = (plant.commonName + " (" + plant.scientificName + ")") ?: "",
-                            porodica = plant.family ?: "",
+                            porodica = plant.mainSpecies?.family ?: "",
                             medicinskoUpozorenje = null,
                             medicinskeKoristi = listOf(),
                             profilOkusa = null,
-                            jela = emptyList(),
+                             jela = emptyList(),
                             klimatskiTipovi = listOf(),
                             zemljisniTipovi = listOf()
                         )
                     }
                 } else {
-                    Log.d("TrefleDAO", "nema biljaka")
+//                    Log.d("TrefleDAO", "nema biljaka")
                     return@withContext emptyList<Biljka>()
                 }
             } else {
-                Log.d("TrefleDAO", "neuspesno: ${response.errorBody()}")
+//                Log.d("TrefleDAO", "neuspesno: ${response.errorBody()}")
                 return@withContext emptyList<Biljka>()
             }
         }
     }
+
+
 
     private fun updateFamilyName(biljka: Biljka, plant: TrefleRetrieveBiljka) {
         val trefleFam = plant.mainSpecies?.family
@@ -177,6 +213,13 @@ class TrefleDAO {
                 "PLANINSKA"->if (light in 0..5 && atmosphericHumidity in 3..7) updatedClimateTypes.add(tip)
             }
         }
+        if (light in 6..9 && atmosphericHumidity in 1..5)  updatedClimateTypes.add(KlimatskiTip.SREDOZEMNA)
+        if (light in 8..10 && atmosphericHumidity in 7..10) updatedClimateTypes.add(KlimatskiTip.TROPSKA)
+        if (light in 6..9 && atmosphericHumidity in 5..8)  updatedClimateTypes.add(KlimatskiTip.SUBTROPSKA)
+        if (light in 4..7 && atmosphericHumidity in 3..7) updatedClimateTypes.add(KlimatskiTip.UMJERENA)
+        if (light in 7..9 && atmosphericHumidity in 1..2) updatedClimateTypes.add(KlimatskiTip.SUHA)
+       if (light in 0..5 && atmosphericHumidity in 3..7) updatedClimateTypes.add(KlimatskiTip.PLANINSKA)
+
         biljka.klimatskiTipovi = updatedClimateTypes
     }
 

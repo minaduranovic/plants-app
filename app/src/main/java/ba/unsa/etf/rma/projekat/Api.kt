@@ -18,9 +18,9 @@ interface Api {
                 @Query("token") token: String = BuildConfig.TREFLE_TOKEN
         ): Response<GetBiljkaRetrieveResponse>
 
-        @GET("plants")
-        suspend fun getPlantsByFlowerColor(
-                @Query("filter[flower_color]") flowerColor: String,
-                @Query("token") token: String = BuildConfig.TREFLE_TOKEN
-        ): Response<GetBiljkaSearchResponse>
+//        @GET("plants")
+//        suspend fun getPlantsByFlowerColor(
+//                @Query("filter[flower_color]") flowerColor: String,
+//                @Query("token") token: String = BuildConfig.TREFLE_TOKEN
+//        ): Response<GetBiljkaSearchResponse>
 }

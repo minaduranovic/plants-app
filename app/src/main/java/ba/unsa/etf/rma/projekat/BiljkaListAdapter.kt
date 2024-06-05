@@ -16,7 +16,9 @@ import kotlinx.coroutines.*
 
 class BiljkaListAdapter(
     private var biljke: List<Biljka>,
+    private val context: Context,
     private var mod: String = "Medicinski"
+
 ) : RecyclerView.Adapter<BiljkaListAdapter.BiljkaViewHolder>() {
 
     private val trefleDAO = TrefleDAO()
@@ -132,7 +134,7 @@ class BiljkaListAdapter(
             holder.biljkaZemljisniTip.text =
                 biljka.zemljisniTipovi.getOrNull(0)?.naziv?:""
         }
-
+        trefleDAO.setContext(context)
         coroutineScope.launch {
             val bitmap = trefleDAO.getImage(biljka)
             holder.biljkaImage.setImageBitmap(bitmap)
@@ -142,12 +144,13 @@ class BiljkaListAdapter(
 
         holder.itemView.setOnClickListener {
             val selectedPlant = biljke[position]
-
-            when (mod) {
+            if (!MainActivity.flagReset){
+            when (mod ) {
                 "Medicinski" -> filterMedicinski(selectedPlant)
                 "Kuharski" -> filterKuharski(selectedPlant)
                 "Botanički" -> filterBotanicki(selectedPlant)
             }
+                }
         }
 
 

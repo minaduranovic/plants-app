@@ -1,5 +1,6 @@
 package ba.unsa.etf.rma.projekat
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,14 +19,21 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var context: Context
     private lateinit var biljkeView: RecyclerView
     private lateinit var biljkeAdapter: BiljkaListAdapter
     private var biljkeList = getBiljkeList()
-//    private lateinit var noveBiljke: List<Biljka>
+    companion object{
+        var flagReset = false
+
+    }
+
+    //    private lateinit var noveBiljke: List<Biljka>
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
-
+        context = this
+        val trefleDAO = TrefleDAO()
+        trefleDAO.setContext(context)
         val pretragaEditText: EditText = findViewById(R.id.pretragaET)
         val brzaPretraga: Button = findViewById(R.id.brzaPretraga)
         val spinnerBoja: Spinner = findViewById(R.id.bojaSPIN)
@@ -63,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                         pretragaEditText.visibility = View.GONE
                         brzaPretraga.visibility = View.GONE
                         spinnerBoja.visibility = View.GONE
+                        flagReset=false
                     }
 
                     "Kuharski" -> {
@@ -71,6 +80,7 @@ class MainActivity : AppCompatActivity() {
                         pretragaEditText.visibility = View.GONE
                         brzaPretraga.visibility = View.GONE
                         spinnerBoja.visibility = View.GONE
+                        flagReset=false
                     }
 
                     "Botanički" -> {
@@ -79,6 +89,7 @@ class MainActivity : AppCompatActivity() {
                         brzaPretraga.visibility = View.VISIBLE
                         spinnerBoja.visibility = View.VISIBLE
                         biljkeAdapter.updateMod("Botanički")
+                        flagReset=false
 
                     }
                 }
@@ -97,24 +108,25 @@ class MainActivity : AppCompatActivity() {
             spinnerBoja.adapter = adapter
         }
 
-        val trefleDAO = TrefleDAO()
+
         val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
         brzaPretraga.setOnClickListener {
             val pretragaText = pretragaEditText.text.toString()
             val selectedColor = spinnerBoja.selectedItem.toString()
-            biljkeAdapter.updateMod("Botanički")
+//            biljkeAdapter.updateMod("Botanički")
 
             if (pretragaText.isNotEmpty() && selectedColor.isNotEmpty()) {
                 coroutineScope.launch {
                     val filteredPlants =
                         trefleDAO.getPlantsWithFlowerColor(selectedColor, pretragaText)
-                    Log.d("MainActivity", "filtrirane biljke iz maina : ${filteredPlants.size}" )
+//                    Log.d("MainActivity", "filtrirane biljke iz maina : ${filteredPlants.size}")
                     biljkeAdapter.updateBiljke(filteredPlants)
+                    flagReset=true
                 }
             }
         }
-        
+
         val resetButton: Button = findViewById<Button>(R.id.resetBtn)
         resetButton.setOnClickListener {
             biljkeList = getBiljkeList()
@@ -127,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        biljkeAdapter = BiljkaListAdapter(listOf())
+        biljkeAdapter = BiljkaListAdapter(listOf(), context)
         biljkeView.adapter = biljkeAdapter
         biljkeAdapter.updateBiljke(biljke)
 
@@ -163,7 +175,7 @@ class MainActivity : AppCompatActivity() {
         val novaBiljka: Biljka? = intent.getParcelableExtra(NovaBiljkaActivity.NOVA_BILJKA)
         if (novaBiljka != null) {
             if (novaBiljka.naziv != null) {
-                 biljke += novaBiljka
+                biljke += novaBiljka
                 biljkeAdapter.updateBiljke(biljke)
             }
         }

@@ -5,8 +5,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Biljka(
-    @SerializedName("common_name") val naziv: String?,
-    @SerializedName("family") var porodica: String?,
+    @SerializedName("common_name") val naziv: String,
+    @SerializedName("family") var porodica: String,
     @SerializedName("medicinskoUpozorenje") var medicinskoUpozorenje: String?,
     @SerializedName("medicinskeKoristi") val medicinskeKoristi: List<MedicinskaKorist>,
     @SerializedName("profilOkusa") val profilOkusa: ProfilOkusaBiljke?,
@@ -15,8 +15,8 @@ data class Biljka(
     @SerializedName("zemljisniTipovi") var zemljisniTipovi: List<Zemljiste>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString(),
         parcel.createStringArrayList()?.map { MedicinskaKorist.valueOf(it) } ?: emptyList(),
         parcel.readSerializable() as ProfilOkusaBiljke,
