@@ -4,11 +4,19 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface Api {
         @GET("plants/search")
         suspend fun searchPlants(
                 @Query("q") query: String?,
+                @Query("token") token: String = BuildConfig.TREFLE_TOKEN
+        ): Response<GetBiljkaSearchResponse>
+
+        @GET("plants/search")
+        suspend fun searchPlants(
+                @Query("q") query: String,
+                @QueryMap filters: Map<String, String>,
                 @Query("token") token: String = BuildConfig.TREFLE_TOKEN
         ): Response<GetBiljkaSearchResponse>
 
