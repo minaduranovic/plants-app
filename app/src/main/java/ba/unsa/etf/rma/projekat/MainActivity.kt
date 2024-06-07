@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent2)
 
         }
-
+//
 //        val bundle = intent.extras
 //        val nazivBiljke = bundle?.getString("nazivBiljke")
 //        val porodicaBiljke = bundle?.getString("porodicaBiljke")
