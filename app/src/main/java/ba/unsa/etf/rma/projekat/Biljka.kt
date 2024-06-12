@@ -2,27 +2,37 @@ package ba.unsa.etf.rma.projekat
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "biljka")
 data class Biljka(
-    @SerializedName("common_name") val naziv: String,
-    @SerializedName("family") var porodica: String,
-    @SerializedName("medicinskoUpozorenje") var medicinskoUpozorenje: String?,
-    @SerializedName("medicinskeKoristi") val medicinskeKoristi: List<MedicinskaKorist>,
-    @SerializedName("profilOkusa") val profilOkusa: ProfilOkusaBiljke?,
-    @SerializedName("jela") var jela: List<String>,
-    @SerializedName("klimatskiTipovi") var klimatskiTipovi: List<KlimatskiTip>,
-    @SerializedName("zemljisniTipovi") var zemljisniTipovi: List<Zemljiste>
-) : Parcelable {
+    @ColumnInfo("naziv") val naziv: String,
+    @PrimaryKey (autoGenerate = true) val id: Long?=null,
+    @ColumnInfo("porodica") var porodica: String,
+    @ColumnInfo("medicinskoUpozorenje") var medicinskoUpozorenje: String?,
+    @ColumnInfo("medicinskeKoristi") @TypeConverters(Converters::class) val medicinskeKoristi: List<MedicinskaKorist>,
+    @ColumnInfo("profilOkusa") val profilOkusa: ProfilOkusaBiljke?,
+    @ColumnInfo("jela") @TypeConverters(Converters::class) var jela: List<String>,
+    @ColumnInfo("klimatskiTipovi") @TypeConverters(Converters::class) var klimatskiTipovi: List<KlimatskiTip>,
+    @ColumnInfo("zemljisniTipovi") @TypeConverters(Converters::class) var zemljisniTipovi: List<Zemljiste>,
+    @ColumnInfo("onlineChecked") var onlineChecked: Boolean = false
+): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
+        parcel.readValue(Long::class.java.classLoader) as Long?,
         parcel.readString().toString(),
         parcel.readString(),
-        parcel.createStringArrayList()?.map { MedicinskaKorist.valueOf(it) } ?: emptyList(),
-        parcel.readSerializable() as ProfilOkusaBiljke,
+        parcel.createTypedArrayList(MedicinskaKorist) ?: emptyList(),
+        parcel.readParcelable(ProfilOkusaBiljke::class.java.classLoader),
         parcel.createStringArrayList() ?: emptyList(),
-        parcel.createStringArrayList()?.map { KlimatskiTip.valueOf(it) } ?: emptyList(),
-        parcel.createStringArrayList()?.map { Zemljiste.valueOf(it) } ?: emptyList()
+        parcel.createTypedArrayList(KlimatskiTip) ?: emptyList(),
+        parcel.createTypedArrayList(Zemljiste) ?: emptyList(),
+        parcel.readByte() != 0.toByte()
     )
 
     override fun describeContents(): Int {
@@ -31,14 +41,17 @@ data class Biljka(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(naziv)
+        dest.writeValue(id)
         dest.writeString(porodica)
         dest.writeString(medicinskoUpozorenje)
-        dest.writeStringList(medicinskeKoristi.map { it.name })
-        dest.writeSerializable(profilOkusa)
+        dest.writeTypedList(medicinskeKoristi)
+        dest.writeParcelable(profilOkusa, flags)
         dest.writeStringList(jela)
-        dest.writeStringList(klimatskiTipovi.map { it.name })
-        dest.writeStringList(zemljisniTipovi.map { it.name })
+        dest.writeTypedList(klimatskiTipovi)
+        dest.writeTypedList(zemljisniTipovi)
+        dest.writeByte(if (onlineChecked) 1 else 0)
     }
+
 
     companion object CREATOR : Parcelable.Creator<Biljka> {
         override fun createFromParcel(parcel: Parcel): Biljka {

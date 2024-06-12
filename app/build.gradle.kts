@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -80,6 +81,11 @@ dependencies {
 
     testImplementation ("org.assertj:assertj-core:3.22.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+
+    implementation("androidx.room:room-runtime:+")
+    annotationProcessor("androidx.room:room-compiler:+")
+    implementation("androidx.room:room-ktx:+")
+    kapt("androidx.room:room-compiler:+")
 
 
 }

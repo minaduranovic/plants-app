@@ -1,11 +1,11 @@
 package ba.unsa.etf.rma.projekat
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.*
+import kotlin.Result
 
 class BiljkaListAdapter(
     private var biljke: List<Biljka>,
@@ -135,9 +136,24 @@ class BiljkaListAdapter(
                 biljka.zemljisniTipovi.getOrNull(0)?.naziv?:""
         }
         trefleDAO.setContext(context)
+        var biljkaDatabase: BiljkaDatabase = BiljkaDatabase.getInstance(context)
+
+        val id=context.resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
+        holder.biljkaImage.setImageResource(id)
+
         coroutineScope.launch {
-            val bitmap = trefleDAO.getImage(biljka)
-            holder.biljkaImage.setImageBitmap(bitmap)
+            val bitmapServis = trefleDAO.getImage(biljka)
+            val biljkaBitmapDb = biljka.id?.let { biljkaDatabase.biljkaDao().getBitmapById(it) }
+//
+            if (biljkaBitmapDb==null) {
+
+                biljka.id?.let { biljkaDatabase.biljkaDao().addImage(it, bitmapServis) }
+                holder.biljkaImage.setImageBitmap(bitmapServis)
+
+            }
+
+
+
         }
 
         holder.prikazModova(mod)

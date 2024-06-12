@@ -22,14 +22,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var context: Context
     private lateinit var biljkeView: RecyclerView
     private lateinit var biljkeAdapter: BiljkaListAdapter
-    private var biljkeList = getBiljkeList()
-    companion object{
-        var flagReset = false
+    private var biljkeList = listOf<Biljka>()
 
+    private lateinit var biljkaDatabase: BiljkaDatabase
+
+    companion object {
+        var flagReset = false
     }
 
-    //    private lateinit var noveBiljke: List<Biljka>
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         context = this
         val trefleDAO = TrefleDAO()
@@ -37,15 +39,8 @@ class MainActivity : AppCompatActivity() {
         val pretragaEditText: EditText = findViewById(R.id.pretragaET)
         val brzaPretraga: Button = findViewById(R.id.brzaPretraga)
         val spinnerBoja: Spinner = findViewById(R.id.bojaSPIN)
-
-        super.onCreate(savedInstanceState)
-
-
-        pretragaEditText.visibility = View.GONE
-        brzaPretraga.visibility = View.GONE
-        spinnerBoja.visibility = View.GONE
-
         val spinner: Spinner = findViewById(R.id.modSpinner)
+
         ArrayAdapter.createFromResource(
             this,
             R.array.modSpinner,
@@ -55,49 +50,61 @@ class MainActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedItem = parent?.getItemAtPosition(position).toString()
+        biljkeAdapter = BiljkaListAdapter(listOf(), context)
+        biljkaDatabase = BiljkaDatabase.getInstance(this)
 
-                when (selectedItem) {
-                    "Medicinski" -> {
-                        biljkeAdapter.updateMod("Medicinski")
-                        biljkeAdapter.updateBiljke(biljke)
-                        pretragaEditText.visibility = View.GONE
-                        brzaPretraga.visibility = View.GONE
-                        spinnerBoja.visibility = View.GONE
-                        flagReset=false
-                    }
+        biljkeView = findViewById(R.id.biljkeRV)
+        biljkeView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        biljkeView.adapter = biljkeAdapter
 
-                    "Kuharski" -> {
-                        biljkeAdapter.updateMod("Kuharski")
-                        biljkeAdapter.updateBiljke(biljke)
-                        pretragaEditText.visibility = View.GONE
-                        brzaPretraga.visibility = View.GONE
-                        spinnerBoja.visibility = View.GONE
-                        flagReset=false
-                    }
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        scope.launch {
+            val biljkeFromDb = biljkaDatabase.biljkaDao().getAllBiljkas()
+            biljkeAdapter.updateBiljke(biljkeFromDb)
 
-                    "Botanički" -> {
-                        biljkeAdapter.updateBiljke(biljke)
-                        pretragaEditText.visibility = View.VISIBLE
-                        brzaPretraga.visibility = View.VISIBLE
-                        spinnerBoja.visibility = View.VISIBLE
-                        biljkeAdapter.updateMod("Botanički")
-                        flagReset=false
-
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedItem = parent?.getItemAtPosition(position).toString()
+                    when (selectedItem) {
+                        "Medicinski" -> {
+                            biljkeAdapter.updateMod("Medicinski")
+                            biljkeAdapter.updateBiljke(biljkeFromDb)
+                            pretragaEditText.visibility = View.GONE
+                            brzaPretraga.visibility = View.GONE
+                            spinnerBoja.visibility = View.GONE
+                            flagReset = false
+                        }
+                        "Kuharski" -> {
+                            biljkeAdapter.updateMod("Kuharski")
+                            biljkeAdapter.updateBiljke(biljkeFromDb)
+                            pretragaEditText.visibility = View.GONE
+                            brzaPretraga.visibility = View.GONE
+                            spinnerBoja.visibility = View.GONE
+                            flagReset = false
+                        }
+                        "Botanički" -> {
+                            biljkeAdapter.updateBiljke(biljkeFromDb)
+                            pretragaEditText.visibility = View.VISIBLE
+                            brzaPretraga.visibility = View.VISIBLE
+                            spinnerBoja.visibility = View.VISIBLE
+                            biljkeAdapter.updateMod("Botanički")
+                            flagReset = false
+                        }
                     }
                 }
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
+
+        pretragaEditText.visibility = View.GONE
+        brzaPretraga.visibility = View.GONE
+        spinnerBoja.visibility = View.GONE
 
         ArrayAdapter.createFromResource(
             this,
@@ -108,77 +115,46 @@ class MainActivity : AppCompatActivity() {
             spinnerBoja.adapter = adapter
         }
 
-
         val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
         brzaPretraga.setOnClickListener {
             val pretragaText = pretragaEditText.text.toString()
             val selectedColor = spinnerBoja.selectedItem.toString()
-//            biljkeAdapter.updateMod("Botanički")
 
             if (pretragaText.isNotEmpty() && selectedColor.isNotEmpty()) {
                 coroutineScope.launch {
-                    val filteredPlants =
-                        trefleDAO.getPlantsWithFlowerColor(selectedColor, pretragaText)
-//                    Log.d("MainActivity", "filtrirane biljke iz maina : ${filteredPlants.size}")
+                    val filteredPlants = trefleDAO.getPlantsWithFlowerColor(selectedColor, pretragaText)
                     biljkeAdapter.updateBiljke(filteredPlants)
-                    flagReset=true
+                    flagReset = true
                 }
             }
         }
 
         val resetButton: Button = findViewById<Button>(R.id.resetBtn)
         resetButton.setOnClickListener {
-            biljkeList = getBiljkeList()
-            biljkeAdapter.updateBiljke(biljke)
+            scope.launch {
+                biljkeList = biljkaDatabase.biljkaDao().getAllBiljkas()
+                biljkeAdapter.updateBiljke(biljkeList)
+            }
         }
-
-        biljkeView = findViewById(R.id.biljkeRV)
-        biljkeView.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        biljkeAdapter = BiljkaListAdapter(listOf(), context)
-        biljkeView.adapter = biljkeAdapter
-        biljkeAdapter.updateBiljke(biljke)
 
         val dodajButton: Button = findViewById<Button>(R.id.novaBiljkaBtn)
         dodajButton.setOnClickListener {
             val intent2 = Intent(this, NovaBiljkaActivity::class.java)
             startActivity(intent2)
-
         }
-//
-//        val bundle = intent.extras
-//        val nazivBiljke = bundle?.getString("nazivBiljke")
-//        val porodicaBiljke = bundle?.getString("porodicaBiljke")
-//        val medicinskoUpozorenje = bundle?.getString("medicinskoUpozorenje")
-//        val listaJela = bundle?.getStringArrayList("listaJela")
-//        val medicinskeKoristi = bundle?.getIntegerArrayList("medicinskaKoristChecked")?.map { MedicinskaKorist.entries[it] }
-//        val profilOkusaCheckedPosition = bundle?.getInt("profilOkusaChecked", 0)
-//        val profilOkusa = ProfilOkusaBiljke.entries[profilOkusaCheckedPosition ?: 0]
-//        val klimatskiTipovi = bundle?.getIntegerArrayList("klimatskiTipChecked")?.map { KlimatskiTip.entries[it] }
-//        val zemljisniTipovi = bundle?.getIntegerArrayList("zemljisniTipChecked")?.map { Zemljiste.entries[it] }
-//
-//
-//        val novaBiljka = Biljka(
-//            nazivBiljke ?: "",
-//            porodicaBiljke ?: "",
-//            medicinskoUpozorenje ?: "",
-//            medicinskeKoristi ?: emptyList(),
-//            profilOkusa,
-//            listaJela ?: emptyList(),
-//            klimatskiTipovi ?: emptyList(),
-//            zemljisniTipovi ?: emptyList()
-//        )
+
         val novaBiljka: Biljka? = intent.getParcelableExtra(NovaBiljkaActivity.NOVA_BILJKA)
         if (novaBiljka != null) {
-            if (novaBiljka.naziv != null) {
-                biljke += novaBiljka
-                biljkeAdapter.updateBiljke(biljke)
+            Log.d("main ","zasto se ne dodajeee${novaBiljka.naziv}?" )
+        }
+        if (novaBiljka != null) {
+            scope.launch {
+                Log.d("main ","zasto se ne dodajeee?")
+                biljkaDatabase.biljkaDao().insert(novaBiljka)
+                val biljkeFromDb = biljkaDatabase.biljkaDao().getAllBiljkas()
+                biljkeAdapter.updateBiljke(biljkeFromDb)
             }
         }
     }
-
 }
