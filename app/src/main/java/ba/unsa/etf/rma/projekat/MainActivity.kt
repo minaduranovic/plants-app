@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         if (novaBiljka != null) {
             scope.launch {
                 Log.d("main ","zasto se ne dodajeee?")
-                biljkaDatabase.biljkaDao().insert(novaBiljka)
+                biljkaDatabase.biljkaDao().saveBiljka(novaBiljka)
                 val biljkeFromDb = biljkaDatabase.biljkaDao().getAllBiljkas()
                 biljkeAdapter.updateBiljke(biljkeFromDb)
             }

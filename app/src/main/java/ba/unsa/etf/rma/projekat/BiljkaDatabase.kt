@@ -74,10 +74,7 @@ abstract class BiljkaDatabase: RoomDatabase() {
 
         @Transaction
         suspend fun addImage(idBiljke: Long, bitmap: Bitmap): Boolean {
-            val biljka = getById(idBiljke)
-            if (biljka == null) {
-                return false
-            }
+            val biljka = getById(idBiljke) ?: return false
             val existingBitmap = getBitmapById(idBiljke)
             if (existingBitmap != null) {
                 return false

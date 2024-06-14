@@ -2,10 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="BiljkeDB4test">
+        <State />
+      </entry>
+      <entry key="DatabaseTest">
+        <State />
+      </entry>
       <entry key="TestS1a">
         <State />
       </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="isprazniBazuIProvjeri()">
         <State />
       </entry>
     </value>

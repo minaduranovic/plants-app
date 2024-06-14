@@ -2,6 +2,9 @@ package ba.unsa.etf.rma.projekat
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -124,35 +127,61 @@ class BiljkaListAdapter(
             holder.biljkaKoristi.elementAt(1).text = koristi.getOrNull(1)?.opis ?: ""
             holder.biljkaKoristi.elementAt(2).text = koristi.getOrNull(2)?.opis ?: ""
         } else if (mod == "Kuharski") {
-            holder.biljkaProfilOkusa.text = biljka.profilOkusa?.opis?:""
+            holder.biljkaProfilOkusa.text = biljka.profilOkusa?.opis ?: ""
             holder.biljkaJela.elementAt(0).text = jela.getOrNull(0) ?: ""
             holder.biljkaJela.elementAt(1).text = jela.getOrNull(1) ?: ""
             holder.biljkaJela.elementAt(2).text = jela.getOrNull(2) ?: ""
         } else if (mod == "Botanički") {
             holder.biljkaPorodica.text = biljka.porodica
             holder.biljkaKlimatskiTip.text =
-                biljka.klimatskiTipovi.getOrNull(0)?.opis?:""
+                biljka.klimatskiTipovi.getOrNull(0)?.opis ?: ""
             holder.biljkaZemljisniTip.text =
-                biljka.zemljisniTipovi.getOrNull(0)?.naziv?:""
+                biljka.zemljisniTipovi.getOrNull(0)?.naziv ?: ""
         }
         trefleDAO.setContext(context)
         var biljkaDatabase: BiljkaDatabase = BiljkaDatabase.getInstance(context)
 
-        val id=context.resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
-        holder.biljkaImage.setImageResource(id)
-
-        coroutineScope.launch {
-            val bitmapServis = trefleDAO.getImage(biljka)
-            val biljkaBitmapDb = biljka.id?.let { biljkaDatabase.biljkaDao().getBitmapById(it) }
+//        val id=context.resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
+//        holder.biljkaImage.setImageResource(id)
 //
-            if (biljkaBitmapDb==null) {
+//        coroutineScope.launch {
+//            val bitmapServis = trefleDAO.getImage(biljka)
+//            val biljkaBitmapDb = biljka.id?.let { biljkaDatabase.biljkaDao().getBitmapById(it) }
+////
+//            if (biljkaBitmapDb==null) {
+//
+//                biljka.id?.let { biljkaDatabase.biljkaDao().addImage(it, bitmapServis) }
+//                holder.biljkaImage.setImageBitmap(bitmapServis)
+//
+//            }
 
-                biljka.id?.let { biljkaDatabase.biljkaDao().addImage(it, bitmapServis) }
-                holder.biljkaImage.setImageBitmap(bitmapServis)
+        val defaultImageId = context.resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
+        holder.biljkaImage.setImageResource(defaultImageId)
 
+        coroutineScope.launch(Dispatchers.Main) {
+            val biljkaBitmapDb = withContext(Dispatchers.IO) {
+                biljka.id?.let {
+                    biljkaDatabase.biljkaDao().getBitmapById(it)
+                }
             }
 
-
+            if (biljkaBitmapDb != null) {
+                holder.biljkaImage.setImageBitmap(biljkaBitmapDb.bitmap)
+            } else {
+                if (isInternetAvailable(context)) {
+                    val bitmapServis = withContext(Dispatchers.IO) { trefleDAO.getImage(biljka) }
+                    if (bitmapServis != null) {
+                        withContext(Dispatchers.IO) {
+                            biljka.id?.let { biljkaDatabase.biljkaDao().addImage(it, bitmapServis) }
+                        }
+                        holder.biljkaImage.setImageBitmap(bitmapServis)
+                    } else {
+                        holder.biljkaImage.setImageResource(defaultImageId)
+                    }
+                } else {
+                    holder.biljkaImage.setImageResource(defaultImageId)
+                }
+            }
 
         }
 
@@ -160,13 +189,13 @@ class BiljkaListAdapter(
 
         holder.itemView.setOnClickListener {
             val selectedPlant = biljke[position]
-            if (!MainActivity.flagReset){
-            when (mod ) {
-                "Medicinski" -> filterMedicinski(selectedPlant)
-                "Kuharski" -> filterKuharski(selectedPlant)
-                "Botanički" -> filterBotanicki(selectedPlant)
-            }
+            if (!MainActivity.flagReset) {
+                when (mod) {
+                    "Medicinski" -> filterMedicinski(selectedPlant)
+                    "Kuharski" -> filterKuharski(selectedPlant)
+                    "Botanički" -> filterBotanicki(selectedPlant)
                 }
+            }
         }
 
 
@@ -209,5 +238,13 @@ class BiljkaListAdapter(
 //        Log.d("BiljkaListAdapter", "updateovano")
 //        Log.d("BiljkaListAdapter", "filtrirane biljke : ${biljke.size}")
         notifyDataSetChanged()
+    }
+
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
