@@ -141,20 +141,6 @@ class BiljkaListAdapter(
         trefleDAO.setContext(context)
         var biljkaDatabase: BiljkaDatabase = BiljkaDatabase.getInstance(context)
 
-//        val id=context.resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
-//        holder.biljkaImage.setImageResource(id)
-//
-//        coroutineScope.launch {
-//            val bitmapServis = trefleDAO.getImage(biljka)
-//            val biljkaBitmapDb = biljka.id?.let { biljkaDatabase.biljkaDao().getBitmapById(it) }
-////
-//            if (biljkaBitmapDb==null) {
-//
-//                biljka.id?.let { biljkaDatabase.biljkaDao().addImage(it, bitmapServis) }
-//                holder.biljkaImage.setImageBitmap(bitmapServis)
-//
-//            }
-
         val defaultImageId = context.resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
         holder.biljkaImage.setImageResource(defaultImageId)
 

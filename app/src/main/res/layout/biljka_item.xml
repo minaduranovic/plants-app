@@ -55,6 +55,13 @@
                     android:textAlignment="center"
                     android:textSize="12sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/checkmarkText"
+                    android:layout_width="26dp"
+                    android:layout_height="wrap_content"
+                    android:text="✓"
+                    android:textAlignment="center" />
             </androidx.cardview.widget.CardView>
 
             <TextView

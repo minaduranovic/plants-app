@@ -73,22 +73,28 @@ class MainActivity : AppCompatActivity() {
                     when (selectedItem) {
                         "Medicinski" -> {
                             biljkeAdapter.updateMod("Medicinski")
-                            biljkeAdapter.updateBiljke(biljkeFromDb)
+                            scope.launch {
+                            biljkeAdapter.updateBiljke(biljkaDatabase.biljkaDao().getAllBiljkas())
+                            }
                             pretragaEditText.visibility = View.GONE
                             brzaPretraga.visibility = View.GONE
                             spinnerBoja.visibility = View.GONE
                             flagReset = false
                         }
                         "Kuharski" -> {
+                            scope.launch {
+                                biljkeAdapter.updateBiljke(biljkaDatabase.biljkaDao().getAllBiljkas())
+                            }
                             biljkeAdapter.updateMod("Kuharski")
-                            biljkeAdapter.updateBiljke(biljkeFromDb)
                             pretragaEditText.visibility = View.GONE
                             brzaPretraga.visibility = View.GONE
                             spinnerBoja.visibility = View.GONE
                             flagReset = false
                         }
                         "Botanički" -> {
-                            biljkeAdapter.updateBiljke(biljkeFromDb)
+                            scope.launch {
+                                biljkeAdapter.updateBiljke(biljkaDatabase.biljkaDao().getAllBiljkas())
+                            }
                             pretragaEditText.visibility = View.VISIBLE
                             brzaPretraga.visibility = View.VISIBLE
                             spinnerBoja.visibility = View.VISIBLE

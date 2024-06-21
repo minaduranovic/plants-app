@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.View
 import android.widget.ArrayAdapter
@@ -170,9 +171,10 @@ class NovaBiljkaActivity : AppCompatActivity() {
 
                 scope.launch {
                     fixedBiljka = withContext(Dispatchers.IO) {
+                        novaBiljka.onlineChecked=true
                         trefleDAO.fixData(novaBiljka)
                     }
-
+//                    Log.d("nova","${novaBiljka.jela.size}")
                     if (fixedBiljka!= null) {
                         val intent = Intent(this@NovaBiljkaActivity, MainActivity::class.java)
                         intent.putExtra(NOVA_BILJKA, fixedBiljka)
