@@ -1,22 +1,21 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.adapters
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import ba.unsa.etf.rma.projekat.MainActivity
+import ba.unsa.etf.rma.projekat.R
+import ba.unsa.etf.rma.projekat.TrefleDAO
+import ba.unsa.etf.rma.projekat.data.Biljka
+import ba.unsa.etf.rma.projekat.data.room.BiljkaDatabase
 import kotlinx.coroutines.*
-import kotlin.Result
 
 class BiljkaListAdapter(
     private var biljke: List<Biljka>,

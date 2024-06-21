@@ -1,6 +1,10 @@
 package ba.unsa.etf.rma.projekat
 
-import android.graphics.Bitmap
+import ba.unsa.etf.rma.projekat.data.Biljka
+import ba.unsa.etf.rma.projekat.data.KlimatskiTip
+import ba.unsa.etf.rma.projekat.data.MedicinskaKorist
+import ba.unsa.etf.rma.projekat.data.ProfilOkusaBiljke
+import ba.unsa.etf.rma.projekat.data.Zemljiste
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.JUnitSoftAssertions
 import org.junit.Assert.assertTrue
@@ -8,7 +12,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mock
 
 
 @RunWith(JUnit4::class)
@@ -30,11 +33,13 @@ class TestS3 {
             jela = listOf("Salata od paradajza", "Punjene tikvice"),
             klimatskiTipovi = listOf(KlimatskiTip.SREDOZEMNA, KlimatskiTip.SUBTROPSKA),
             zemljisniTipovi = listOf(Zemljiste.PJESKOVITO, Zemljiste.ILOVACA),
-        ))
+        )
+        )
         softAssert.assertThat(fixed.naziv).withFailMessage("T1.1 - naziv should contain \"Ocium basilicum\"").contains("Ocimum basilicum")
         softAssert.assertThat(fixed.porodica).withFailMessage("T1.2 - porodica should contain \"Lamiaceae\"").contains("Lamiaceae")
         softAssert.assertThat(fixed.medicinskoUpozorenje).withFailMessage("T1.3 - upozorenje should contain \"NIJE JESTIVO\"").contains("NIJE JESTIVO")
-        softAssert.assertThat(fixed.klimatskiTipovi).withFailMessage("T1.4 - klimatskiTipovi should contain \"Umjerena\"").contains(KlimatskiTip.UMJERENA)
+        softAssert.assertThat(fixed.klimatskiTipovi).withFailMessage("T1.4 - klimatskiTipovi should contain \"Umjerena\"").contains(
+            KlimatskiTip.UMJERENA)
         softAssert.assertAll()
     }
 
@@ -52,11 +57,13 @@ class TestS3 {
             jela = listOf("Salata od paradajza", "Punjene tikvice"),
             klimatskiTipovi = listOf(KlimatskiTip.SREDOZEMNA, KlimatskiTip.SUBTROPSKA),
             zemljisniTipovi = listOf(Zemljiste.PJESKOVITO, Zemljiste.ILOVACA),
-        ))
+        )
+        )
 
         softAssert.assertThat(fixed.naziv).withFailMessage("T2.1 - naziv should contain \"Epipactis helleborine\"").contains("Epipactis helleborine")
         softAssert.assertThat(fixed.medicinskoUpozorenje).withFailMessage("T2.2 - upozorenje should contain \"NIJE JESTIVO\"").contains("NIJE JESTIVO")
-        softAssert.assertThat(fixed.klimatskiTipovi).withFailMessage("T2.3 - klimatskiTipovi should contain \"Planinska\"").contains(KlimatskiTip.PLANINSKA)
+        softAssert.assertThat(fixed.klimatskiTipovi).withFailMessage("T2.3 - klimatskiTipovi should contain \"Planinska\"").contains(
+            KlimatskiTip.PLANINSKA)
         softAssert.assertAll()
     }
 

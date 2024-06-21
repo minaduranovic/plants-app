@@ -13,6 +13,9 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.unsa.etf.rma.projekat.adapters.BiljkaListAdapter
+import ba.unsa.etf.rma.projekat.data.Biljka
+import ba.unsa.etf.rma.projekat.data.room.BiljkaDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

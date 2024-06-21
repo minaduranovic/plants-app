@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.room
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

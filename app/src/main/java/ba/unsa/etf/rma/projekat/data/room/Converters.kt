@@ -1,6 +1,9 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.room
 
 import androidx.room.TypeConverter
+import ba.unsa.etf.rma.projekat.data.KlimatskiTip
+import ba.unsa.etf.rma.projekat.data.MedicinskaKorist
+import ba.unsa.etf.rma.projekat.data.Zemljiste
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

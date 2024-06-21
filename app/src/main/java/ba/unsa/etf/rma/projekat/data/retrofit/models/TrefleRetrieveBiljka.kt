@@ -1,5 +1,6 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.retrofit.models
 
+import ba.unsa.etf.rma.projekat.data.retrofit.models.MainSpecies
 import com.google.gson.annotations.SerializedName
 
 data class TrefleRetrieveBiljka(

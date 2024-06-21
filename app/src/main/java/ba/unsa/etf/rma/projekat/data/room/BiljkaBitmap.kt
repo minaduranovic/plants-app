@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.room
 
 import android.graphics.Bitmap
 import androidx.room.ColumnInfo
@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import ba.unsa.etf.rma.projekat.data.Biljka
 
 @Entity (
     foreignKeys = [ForeignKey(entity = Biljka:: class,

@@ -12,6 +12,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ba.unsa.etf.rma.projekat.data.Biljka
+import ba.unsa.etf.rma.projekat.data.room.BiljkaDatabase
+import ba.unsa.etf.rma.projekat.data.KlimatskiTip
+import ba.unsa.etf.rma.projekat.data.MedicinskaKorist
+import ba.unsa.etf.rma.projekat.data.ProfilOkusaBiljke
+import ba.unsa.etf.rma.projekat.data.Zemljiste
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.hasItems

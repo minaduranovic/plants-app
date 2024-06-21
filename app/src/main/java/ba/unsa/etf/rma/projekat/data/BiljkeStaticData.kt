@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data
 
 var biljke = listOf(
     Biljka(

@@ -1,5 +1,8 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.retrofit.models
 
+import ba.unsa.etf.rma.projekat.data.retrofit.models.Flower
+import ba.unsa.etf.rma.projekat.data.retrofit.models.Growth
+import ba.unsa.etf.rma.projekat.data.retrofit.models.Specifications
 import com.google.gson.annotations.SerializedName
 
 data class MainSpecies(

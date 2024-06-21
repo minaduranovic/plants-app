@@ -1,13 +1,12 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.google.gson.annotations.SerializedName
+import ba.unsa.etf.rma.projekat.data.room.Converters
 
 @Entity(tableName = "biljka")
 data class Biljka(

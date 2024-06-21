@@ -1,11 +1,11 @@
 package ba.unsa.etf.rma.projekat
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.View
 import android.widget.ArrayAdapter
@@ -17,6 +17,11 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import ba.unsa.etf.rma.projekat.data.Biljka
+import ba.unsa.etf.rma.projekat.data.KlimatskiTip
+import ba.unsa.etf.rma.projekat.data.MedicinskaKorist
+import ba.unsa.etf.rma.projekat.data.ProfilOkusaBiljke
+import ba.unsa.etf.rma.projekat.data.Zemljiste
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,7 +44,7 @@ class NovaBiljkaActivity : AppCompatActivity() {
     private lateinit var uslikajBiljkuButton: Button
     private val listaJela = arrayListOf<String>()
     private lateinit var adapter5: ArrayAdapter<String>
-
+    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -169,7 +174,7 @@ class NovaBiljkaActivity : AppCompatActivity() {
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 val trefleDAO = TrefleDAO()
 
-                scope.launch {
+               scope.launch {
                     fixedBiljka = withContext(Dispatchers.IO) {
                         novaBiljka.onlineChecked=true
                         trefleDAO.fixData(novaBiljka)

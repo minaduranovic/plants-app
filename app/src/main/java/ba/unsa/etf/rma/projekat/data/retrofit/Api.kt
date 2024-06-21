@@ -1,5 +1,8 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.retrofit
 
+import ba.unsa.etf.rma.projekat.BuildConfig
+import ba.unsa.etf.rma.projekat.data.retrofit.models.GetBiljkaRetrieveResponse
+import ba.unsa.etf.rma.projekat.data.retrofit.models.GetBiljkaSearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

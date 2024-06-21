@@ -3,14 +3,14 @@ package ba.unsa.etf.rma.projekat
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import java.io.IOException
 import java.net.URL
+import  ba.unsa.etf.rma.projekat.data.*
+import ba.unsa.etf.rma.projekat.data.retrofit.ApiAdapter
+import ba.unsa.etf.rma.projekat.data.retrofit.models.TrefleRetrieveBiljka
+import ba.unsa.etf.rma.projekat.data.retrofit.models.TrefleSearchBiljka
+import ba.unsa.etf.rma.projekat.data.Biljka
 
 class TrefleDAO {
 

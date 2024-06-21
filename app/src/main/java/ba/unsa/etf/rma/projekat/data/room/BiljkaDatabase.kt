@@ -1,8 +1,10 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data.room
 
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.room.*
+import ba.unsa.etf.rma.projekat.TrefleDAO
+import ba.unsa.etf.rma.projekat.data.Biljka
 
 @Database(entities = [Biljka::class, BiljkaBitmap::class], version = 6)
 @TypeConverters(Converters::class, BitmapConverter::class)
@@ -101,7 +103,7 @@ abstract class BiljkaDatabase: RoomDatabase() {
                 context.applicationContext,
                 BiljkaDatabase::class.java,
                 "biljke-db"
-            ).fallbackToDestructiveMigration().build()
+            ).build()
         }
     }
 }

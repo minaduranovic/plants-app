@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.projekat
+package ba.unsa.etf.rma.projekat.data
 
 import android.os.Parcel
 import android.os.Parcelable
