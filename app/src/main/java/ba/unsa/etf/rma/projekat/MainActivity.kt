@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.unsa.etf.rma.projekat.adapters.BiljkaListAdapter
 import ba.unsa.etf.rma.projekat.data.Biljka
+import ba.unsa.etf.rma.projekat.data.getBiljkeList
 import ba.unsa.etf.rma.projekat.data.room.BiljkaDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         val spinnerBoja: Spinner = findViewById(R.id.bojaSPIN)
         val spinner: Spinner = findViewById(R.id.modSpinner)
 
+//        val listBiljke = getBiljkeList()
+//
+//        val scope2 = CoroutineScope(Job() + Dispatchers.Main)
+//        scope2.launch {
+//            listBiljke.forEach { biljka ->
+//                biljkaDatabase.biljkaDao().saveBiljka(biljka)
+//            }
+//        }
         ArrayAdapter.createFromResource(
             this,
             R.array.modSpinner,
